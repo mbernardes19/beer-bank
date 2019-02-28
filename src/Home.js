@@ -8,6 +8,7 @@ import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/
 import './../public/style.css';
 import BeerCard from './BeerCard';
 
+
 const breakpointValues = {
     xs: 0,
     sm: 638,

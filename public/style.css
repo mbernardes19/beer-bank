@@ -3,10 +3,12 @@
 }
 
 header{
-    padding:20px;
     background-color:orange;
     text-align:center;
     color:white;
+    position:relative;
+    z-index:0;
+    
 }
 h1{
     padding:0;
@@ -20,9 +22,24 @@ p{
     margin-top:5px;
 }
 nav{
-    position:absolute;
-    right:0;
-    top:10px;
+    display:block;
+    width:100%;
+    height:30px;
+    position: sticky;
+    top: 0;
+    text-align:right;
+    z-index:10;
+    background-color:orange;
+    padding-top:5px;
+}
+#navbar{
+    background-color:orange;
+    width:100%;
+    height:30px;
+    position: absolute;
+    z-index:1;
+    top:0;
+    padding-top:5px;
 }
 .link{
     display:inline-block;
