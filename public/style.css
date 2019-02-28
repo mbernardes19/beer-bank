@@ -49,6 +49,11 @@ nav{
     color:white;
 }
 
+.fav-btn{
+    position:absolute;
+    right:0;
+}
+
 #search-input{
     padding:10px;
     height:50px;

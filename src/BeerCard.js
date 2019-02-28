@@ -9,6 +9,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/core/styles';
 import './../public/style.css';
 
+
+
 const breakpointValues = {
     xs: 0,
     sm: 638,
@@ -16,7 +18,21 @@ const breakpointValues = {
     lg: 992,
     xl: 1200,
   };
-  const theme = createMuiTheme({ breakpoints: { values: breakpointValues } });
+
+  const theme = createMuiTheme({
+    breakpoints: { values: breakpointValues },
+    overrides:{
+       MuiCheckbox:{
+            checked:{
+                color:'#FFA500',
+            }
+       },
+  },
+  typography: {
+      useNextVariants: true,
+    },
+  });
+
 
 export default class BeerCard extends React.Component{
     constructor(props){
@@ -41,11 +57,13 @@ export default class BeerCard extends React.Component{
             <MuiThemeProvider theme={theme}>
 
                 <Grid item xs={12} md={6} lg={4}>
-                    <Paper onMouseEnter={this.handleMouseEnter()} onMouseLeave={this.handleMouseLeave()} id={this.props.id} elevation={this.state.elevation} className="beer-container">
+                    <Paper style={{position:'relative'}} onMouseEnter={this.handleMouseEnter()} onMouseLeave={this.handleMouseLeave()} id={this.props.id} elevation={this.state.elevation} className="beer-container">
                         <FormControlLabel
                             className='fav-btn'
                             control={
-                                <Checkbox icon={<StarBorder/>} checkedIcon={<Star/>} value='checkedFav'/>
+                                <MuiThemeProvider theme={theme}>
+                                    <Checkbox icon={<StarBorder/>} color='default' checkedIcon={<Star/>} value='checkedFav'/>
+                                </MuiThemeProvider>
                             }
                         />
                         <img className="beer-img" src={this.props.img}></img>

@@ -53,8 +53,8 @@ export default class Header extends React.Component{
         let result = fuse.search(str);
         this.setState({searchQuery:result});
         console.log(result);
-  */
     }
+        */
 
 
     render(){
