@@ -57,7 +57,7 @@ export default class BeerCard extends React.Component{
             <MuiThemeProvider theme={theme}>
 
                 <Grid item xs={12} md={6} lg={4}>
-                    <Paper style={{position:'relative'}} onMouseEnter={this.handleMouseEnter()} onMouseLeave={this.handleMouseLeave()} id={this.props.id} elevation={this.state.elevation} className="beer-container">
+                    <Paper style={{position:'relative', zIndex:1}} onMouseEnter={this.handleMouseEnter()} onMouseLeave={this.handleMouseLeave()} id={this.props.id} elevation={this.state.elevation} className="beer-container">
                         <FormControlLabel
                             className='fav-btn'
                             control={

@@ -15,7 +15,8 @@ export default class Header extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            searchQuery:""
+            searchQuery:"",
+            filtered:[]
         }
       
     }
@@ -23,7 +24,6 @@ export default class Header extends React.Component{
     async getBeers(){
         let response = await fetch('https://api.punkapi.com/v2/beers');
         let data = await response.json();
-        console.log(data);
         return data;
     }
 
@@ -56,6 +56,11 @@ export default class Header extends React.Component{
     }
         */
 
+    componentDidMount(){
+        this.setState({
+            filtered:this.props.items
+        })
+    }
 
     render(){
         
