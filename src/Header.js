@@ -81,8 +81,7 @@ export default class Header extends React.Component{
                        
                     </Sticky>
                         <h1>The Beer Bank</h1>
-                        <p>Find your favorite beer here</p>
-                        <input id='search-input' onChange={this.handleChange} value={this.state.searchQuery} type='text' placeholder='Search for beer name'></input>
+                        <p style={{marginBottom:0, paddingBottom:20}}>Find your favorite beer here</p>
                     </header>
                     
                 </Grid>

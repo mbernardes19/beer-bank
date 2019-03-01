@@ -54,11 +54,39 @@ nav{
     right:0;
 }
 
-#search-input{
-    padding:10px;
-    height:50px;
-    width:550px;
+@media screen and (min-width:992px) {
+    #search-input{
+        box-sizing: border-box;
+        padding:10px;
+        height:50px;
+        width:650px;
+        margin:0 auto;
+        display:block;
+    }    
 }
+
+@media screen and (min-width:768px) {
+    #search-input{
+        box-sizing: border-box;
+        padding:10px;
+        height:50px;
+        width:650px;
+        margin:0 auto;
+        display:block;
+    }    
+}
+
+@media screen and (max-width:768px) {
+    #search-input{
+        box-sizing: border-box;
+        padding:10px;
+        height:50px;
+        width:90%;
+        margin:0 auto;
+        display:block;
+    }    
+}
+
 
 .beer-container{
     text-align:center;

@@ -23,77 +23,60 @@ export default class BeerGrid extends React.Component{
     constructor(props){
         super(props);
         this.state={           
-            beers:[],
-            beersById:[{
-                id:'',
-                name:'',
-                tagline:'',
-            }]
+            filteredBeers:[],
+        };
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    componentDidMount(){
+        this.setState({
+            filteredBeers:this.props.beers
+        });
+    }
+
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            filteredBeers:nextProps.beers
+        })
+    }
+
+    handleChange(e){
+        let currentBeers = [];
+        let newBeers = [];
+
+        if(e.target.value !== ""){
+            currentBeers = this.props.beers;
+            newBeers = currentBeers.filter(beer => {
+                const lcName = beer.name.toLowerCase();
+                const lcTagLine = beer.tagline.toLowerCase();
+                const filter = e.target.value.toLowerCase();
+                if(lcName.includes(filter) || lcTagLine.includes(filter))
+                    return true
+            });
+        } else {
+            newBeers = this.props.beers;
         }
-    }
-    
+        this.setState({
+            filteredBeers: newBeers
+        });
+        {console.log(this.state.filteredBeers)}
 
-    async getBeers(){
-        let response = await fetch('https://api.punkapi.com/v2/beers');
-        let data = await response.json();
-        console.log(data);
-        return data;
     }
-
-    async getBeerById(id){
-        let response = await fetch(`https://api.punkapi.com/v2/beers/${id}`);
-        let data = await response.json();
-        return data
-    }
-
-    async getBeerImages(){
-        let fetchedImages = [];
-        let fetchedBeers = await this.getBeers();
-        for(let i=0;i<fetchedBeers.length;i++){
-            fetchedImages.push(fetchedBeers[i].image_url);
-        }
-        return fetchedImages; 
-    }
-
-    async getBeerNames(){
-        let fetchedNames = [];
-        let fetchedBeers = await this.getBeers();
-        for(let i=0;i<fetchedBeers.length;i++){
-            fetchedNames.push(fetchedBeers[i].name);
-        }
-        return fetchedNames; 
-    }
-
-    async componentDidMount(){
-        this.setState({beers: await this.getBeers()});
-    }
-
 
     render(){
         return(
             <React.Fragment>
-            
             <MuiThemeProvider theme={theme}>
-            
+                <Grid item xs={12}>
+                    <div style={{backgroundColor:'orange', paddingBottom:20}}>
+                        <input id='search-input' type='text' onChange={this.handleChange} placeholder='Search for beer'/>
+                    </div>
+                </Grid>
                 {
-                    this.state.beers.map((beer)=>
+                    this.state.filteredBeers.map((beer)=>
                         <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url}/>
                     )
                 }
-                {
-                    this.state.beers.map((beer)=>{
-                        let beerArr = this.state.beersById;
-                        let newBeer = {
-                                        id:beer.id,
-                                        name:beer.name,
-                                        tagline:beer.tagline
-                                      };
-                        beerArr.push(newBeer);                        
-                        }
-                    )
-                }
-                {console.log(this.state.beersById)}
-            
             </MuiThemeProvider>
 
             </React.Fragment>
