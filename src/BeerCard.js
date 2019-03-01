@@ -10,7 +10,6 @@ import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/
 import './../public/style.css';
 
 
-
 const breakpointValues = {
     xs: 0,
     sm: 638,
@@ -38,7 +37,8 @@ export default class BeerCard extends React.Component{
     constructor(props){
         super(props);
         this.state={           
-            elevation:2
+            elevation:2,
+            fav:false
         }
     }
 
@@ -50,7 +50,12 @@ export default class BeerCard extends React.Component{
         this.setState({elevation:2});
     }
 
+    handleChange = () => (event) =>{
+        this.setState({fav:event.target.checked});
+    }
+
     render(){
+        const { elevation, fav } = this.state;
         return(
             <React.Fragment>
             
@@ -58,14 +63,14 @@ export default class BeerCard extends React.Component{
 
                 <Grid item xs={12} md={6} lg={4}>
                     <Paper style={{position:'relative', zIndex:1}} onMouseEnter={this.handleMouseEnter()} onMouseLeave={this.handleMouseLeave()} id={this.props.id} elevation={this.state.elevation} className="beer-container">
-                        <FormControlLabel
-                            className='fav-btn'
-                            control={
-                                <MuiThemeProvider theme={theme}>
-                                    <Checkbox icon={<StarBorder/>} color='default' checkedIcon={<Star/>} value='checkedFav'/>
-                                </MuiThemeProvider>
-                            }
-                        />
+                            <FormControlLabel
+                                className='fav-btn'
+                                control={
+                                    <MuiThemeProvider theme={theme}>
+                                        <Checkbox checked={fav} onChange={this.handleChange()} icon={<StarBorder/>} color='default' checkedIcon={<Star/>} value='checked'/>
+                                    </MuiThemeProvider>
+                                }
+                            />
                         <img className="beer-img" src={this.props.img}></img>
                         <h1 className="beer-name">{this.props.name}</h1>
                         <p className="beer-tag">{this.props.tag}</p>

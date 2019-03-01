@@ -22,7 +22,8 @@ export default class Favourite extends React.Component{
     constructor(props){
         super(props);
         this.state={           
-            beers:[]
+            beers:[],
+            favouriteBeers:[]
         }
     }
     
@@ -70,7 +71,11 @@ export default class Favourite extends React.Component{
             <MuiThemeProvider theme={theme}>
             <Grid justify='center' container>
                 <Header/>
-
+                {
+                    this.state.favouriteBeers.map((beer)=>
+                        <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url}/>
+                    )
+                }
 
 
             
