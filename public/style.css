@@ -50,8 +50,10 @@ nav{
 }
 
 .fav-btn{
-    position:absolute;
-    right:0;
+    position:relative;
+    z-index:2;
+    left:90%;
+    top:55px; 
 }
 
 @media screen and (min-width:992px) {
@@ -73,7 +75,7 @@ nav{
         width:650px;
         margin:0 auto;
         display:block;
-    }    
+    }       
 }
 
 @media screen and (max-width:768px) {
@@ -84,7 +86,7 @@ nav{
         width:90%;
         margin:0 auto;
         display:block;
-    }    
+    }
 }
 
 
@@ -106,3 +108,25 @@ nav{
 
 }
 
+.dialog-content{
+    display:inline-block;
+    margin-left:20px;
+}
+
+.dialog-img{
+    display:inline-block;
+    width:20%;
+    height:50%;
+}
+
+.dialog-container{
+    display:flex;
+}
+
+.beer-name-dialog{
+    color:orange;
+}
+
+.subtitle-dialog{
+    color:orange;
+}

@@ -39,17 +39,21 @@ export default class Favourite extends React.Component{
     }
 
     render(){
+        let favBeers=[];
+        if(this.state.favBeers){
+            favBeers = this.state.favBeers.map((beer)=>{
+                return (
+                    <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url}/>
+                );                
+            });
+        }
         return(
             <React.Fragment>
                 <Grid justify='center' container>
                     <Header/>
+    
+                    {favBeers}
                     {console.log(this.state.favBeers)}
-                    {
-                    this.state.favBeers.map((beer)=>
-                        <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url}/>
-                    )
-                }
-  
                 </Grid>
             </React.Fragment>
         );

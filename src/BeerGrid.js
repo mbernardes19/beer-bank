@@ -81,7 +81,7 @@ export default class BeerGrid extends React.Component{
                 </Grid>
                 {
                     this.state.filteredBeers.map((beer)=>
-                        <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url} favs={this.state.favouriteBeers}/>
+                        <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url} description={beer.description} abv={beer.abv} ibu={beer.ibu} ebc={beer.ebc} foodPairing={beer.food_pairing} favs={this.state.favouriteBeers}/>
                     )
                 }
 
