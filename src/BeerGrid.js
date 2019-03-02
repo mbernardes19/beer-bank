@@ -9,7 +9,7 @@ import './../public/style.css';
 import BeerCard from './BeerCard';
 import Favourite from './Favourite';
 import Hidden from '@material-ui/core/Hidden';
-
+import InfiniteScroll from 'react-infinite-scroller';
 
 const breakpointValues = {
     xs: 0,
@@ -30,7 +30,7 @@ export default class BeerGrid extends React.Component{
                 name:'',
                 img:'',
                 tagline:'',
-            }]
+            }],
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -46,6 +46,7 @@ export default class BeerGrid extends React.Component{
             filteredBeers:nextProps.beers
         })
     }
+    
 
     handleChange(e){
         let currentBeers = [];
@@ -55,10 +56,8 @@ export default class BeerGrid extends React.Component{
             currentBeers = this.props.beers;
             newBeers = currentBeers.filter(beer => {
                 const lcName = beer.name.toLowerCase();
-                const lcTagLine = beer.tagline.toLowerCase();
                 const filter = e.target.value.toLowerCase();
-                if(lcName.includes(filter) || lcTagLine.includes(filter))
-                    return true
+                return lcName.includes(filter)
             });
         } else {
             newBeers = this.props.beers;
@@ -71,20 +70,22 @@ export default class BeerGrid extends React.Component{
     }
 
     render(){
+        const loader = <p>Loading...</p>
         return(
             <React.Fragment>
             <MuiThemeProvider theme={theme}>
                 <Grid item xs={12}>
                     <div style={{backgroundColor:'orange', paddingBottom:20}}>
-                        <input id='search-input' type='text' onChange={this.handleChange} placeholder='Search for beer'/>
+                        <input id='search-input' type='text' onChange={this.handleChange} placeholder='Search for beer name'/>
                     </div>
                 </Grid>
-                {
-                    this.state.filteredBeers.map((beer)=>
-                        <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url} description={beer.description} abv={beer.abv} ibu={beer.ibu} ebc={beer.ebc} foodPairing={beer.food_pairing} favs={this.state.favouriteBeers}/>
-                    )
-                }
-
+                
+                    {
+                        this.state.filteredBeers.map((beer)=>
+                            <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url} description={beer.description} abv={beer.abv} ibu={beer.ibu} ebc={beer.ebc} foodPairing={beer.food_pairing} favs={this.state.favouriteBeers}/>
+                        )
+                    }
+                
                     <Favourite favourites={this.state.favouriteBeers}/>
 
             </MuiThemeProvider>

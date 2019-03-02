@@ -110,13 +110,13 @@ nav{
 
 .dialog-content{
     display:inline-block;
-    margin-left:20px;
+    margin-left:35px;
 }
 
 .dialog-img{
     display:inline-block;
     width:20%;
-    height:50%;
+    height:45%;
 }
 
 .dialog-container{
@@ -129,4 +129,8 @@ nav{
 
 .subtitle-dialog{
     color:orange;
+}
+
+.related-dialog{
+    display:block;
 }

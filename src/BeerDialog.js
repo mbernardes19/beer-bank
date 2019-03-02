@@ -74,7 +74,8 @@ export default class BeerDialog extends React.Component{
                     open={this.props.open}
                     onClose={this.props.onClose}   
                 >
-                    <DialogContent className='dialog-container'>
+                    <DialogContent >
+                        <div className='dialog-container'>
                             <CloseIcon style={{position:'absolute', right:0, top:0, margin:'5px'}} onClick={this.props.onClose}/>
                             <img className='dialog-img' src={this.props.img}/>
                         <div className='dialog-content'>
@@ -94,10 +95,14 @@ export default class BeerDialog extends React.Component{
                            <ul>
                             {foodPairing}
                             </ul> 
+                        </div>
+                        </div>
+                        <div className='related-dialog'>
                         <h4 className='subtitle-dialog'>
                             You might also like:
                         </h4>
                         </div>
+                        
                     </DialogContent>                
                 </Dialog>
             </MuiThemeProvider>
