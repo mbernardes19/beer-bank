@@ -38,22 +38,22 @@ export default class Favourite extends React.Component{
         })
     }
 
+
+    showFavorites = () =>{
+        let favs = JSON.parse(sessionStorage.getItem('favorites'));
+        console.log(favs);
+        return favs.map((fav)=>
+            <BeerCard id={fav.id} key={fav.id} tag={fav.tagline} name={fav.name} img={fav.img} description={fav.description} abv={fav.abv} ibu={fav.ibu} ebc={fav.ebc} foodPairing={fav.foodPairing} isFav={true} />
+        )
+    }
+
     render(){
-        let favBeers=[];
-        if(this.state.favBeers){
-            favBeers = this.state.favBeers.map((beer)=>{
-                return (
-                    <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url}/>
-                );                
-            });
-        }
         return(
             <React.Fragment>
                 <Grid justify='center' container>
                     <Header/>
     
-                    {favBeers}
-                    {console.log(this.state.favBeers)}
+                    {this.showFavorites()};
                 </Grid>
             </React.Fragment>
         );

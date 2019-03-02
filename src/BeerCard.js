@@ -39,17 +39,18 @@ export default class BeerCard extends React.Component{
         super(props);
         this.state={           
             elevation:2,
-            fav:false,
+            favHome: Boolean(sessionStorage.getItem('favHome')),
+            fav:this.props.isFav,
             open:false
         }
     }
-
+/*
     componentWillReceiveProps(nextProps){
         this.setState({
             fav:nextProps.fav
         })
     }
-
+*/
     
     handleMouseEnter = () => () =>{
         this.setState({elevation:10});
@@ -64,9 +65,19 @@ export default class BeerCard extends React.Component{
         this.props.favs.push({
             id:this.props.id,
             name:this.props.name,
-            tagline:this.props.tag
+            img: this.props.img,
+            tagline: this.props.tag,
+            descripton: this.props.description,
+            abv: this.props.abv,
+            ibu: this.props.ibu,
+            ebc: this.props.ebc,
+            foodPairing: this.props.foodPairing,
+            isFav: this.state.fav
         })
         this.forceUpdate();
+        sessionStorage.setItem('favorites',JSON.stringify(this.props.favs));
+        let favHome = sessionStorage.setItem('favHome','true');
+        this.setState({favHome:favHome});
         console.log(this.props.favs);
     }
 

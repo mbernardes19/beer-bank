@@ -25,12 +25,7 @@ export default class BeerGrid extends React.Component{
         super(props);
         this.state={           
             fetchedBeers:[],
-            favouriteBeers:[{
-                id:'',
-                name:'',
-                img:'',
-                tagline:'',
-            }],
+            favouriteBeers:[],
             per_page: 25,
             page: 1,
             totalPages: null,
@@ -123,8 +118,8 @@ export default class BeerGrid extends React.Component{
                     }
                     {console.log(`Fetched beers:`)}
                     {console.log(this.state.fetchedBeers)}
-                    
-
+                   
+                   
             </MuiThemeProvider>
 
             </React.Fragment>
