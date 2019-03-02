@@ -25,7 +25,6 @@ export default class BeerGrid extends React.Component{
         super(props);
         this.state={           
             fetchedBeers:[],
-            filteredBeers:[],
             favouriteBeers:[{
                 id:'',
                 name:'',
@@ -78,43 +77,32 @@ export default class BeerGrid extends React.Component{
             page: prevState.page + 1,
             scrolling: true,
         }), this.getBeers)
-        this.setState({filteredBeers: this.state.fetchedBeers});
      }
  
 
     async handleChange(e){
         let currentBeers = [];
         let newBeers = [];
-        let getQueryBeers = [];
+        let fetchQueryBeers = [];
         let queryBeers = [];
 
         if(e.target.value !== ""){
             const query = e.target.value.toLowerCase();
             const url = `https://api.punkapi.com/v2/beers?beer_name=${query}`;
             currentBeers = this.state.fetchedBeers;
-            getQueryBeers = await fetch(url);
-            queryBeers = await getQueryBeers.json();
+            fetchQueryBeers = await fetch(url);
+            queryBeers = await fetchQueryBeers.json();
             newBeers = await queryBeers;
-            /*newBeers = currentBeers.filter(beer => {
-                const lcName = beer.name.toLowerCase();
-                const filter = e.target.value.toLowerCase();
-                return lcName.includes(filter)
-             */   
         } else {
-            newBeers = this.state.fetchedBeers;
+            fetchQueryBeers = await fetch('https://api.punkapi.com/v2/beers');
+            queryBeers = await fetchQueryBeers.json();
+            newBeers = await queryBeers;
         }
         this.setState({
-            filteredBeers: newBeers
+            fetchedBeers: newBeers
         });
-        {console.log(this.state.filteredBeers)}
+        {console.log(this.state.fetchedBeers)}
 
-    }
-
-     componentDidMount(){
-        setTimeout(()=>{
-            this.setState({filteredBeers: this.state.fetchedBeers});
-        }, 5);
-        
     }
 
     render(){
@@ -129,12 +117,10 @@ export default class BeerGrid extends React.Component{
                 </Grid>
                 
                     {
-                        this.state.filteredBeers.map((beer)=>
+                        this.state.fetchedBeers.map((beer)=>
                             <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url} description={beer.description} abv={beer.abv} ibu={beer.ibu} ebc={beer.ebc} foodPairing={beer.food_pairing} favs={this.state.favouriteBeers}/>
                         )
                     }
-                    {console.log(`Filtered beers:`)}
-                    {console.log(this.state.filteredBeers)}
                     {console.log(`Fetched beers:`)}
                     {console.log(this.state.fetchedBeers)}
                     
