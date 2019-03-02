@@ -7,8 +7,7 @@ import Header from './Header';
 import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/core/styles';
 import './../public/style.css';
 import BeerCard from './BeerCard';
-import Favourite from './Favourite';
-import Hidden from '@material-ui/core/Hidden';
+
 
 
 const breakpointValues = {
@@ -64,7 +63,7 @@ export default class BeerGrid extends React.Component{
             newBeers = this.props.beers;
         }
         this.setState({
-            filteredBeers: newBeers
+            filteredBeers: newBeer
         });
         {console.log(this.state.filteredBeers)}
 
@@ -80,13 +79,10 @@ export default class BeerGrid extends React.Component{
                     </div>
                 </Grid>
                 {
-                    this.state.filteredBeers.map((beer)=>
-                        <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url} favs={this.state.favouriteBeers}/>
+                    this.state.favouriteBeers.map((beer)=>
+                        <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url} fav={this.state.favouriteBeers}/>
                     )
                 }
-
-                    <Favourite favourites={this.state.favouriteBeers}/>
-
             </MuiThemeProvider>
 
             </React.Fragment>

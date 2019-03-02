@@ -81,7 +81,7 @@ export default class Home extends React.Component{
                         }
                     )
                 }
-                <Grid justify='center' container>
+                <Grid justify='center' alignContent='flex-start' container>
                     <Header/>
                     
                     <BeerGrid searchBeers={this.state.searchableBeers} beers={this.state.fetchedBeers}/>

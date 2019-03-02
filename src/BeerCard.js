@@ -8,6 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/core/styles';
 import './../public/style.css';
+import BeerDialog from './BeerDialog';
 
 
 const breakpointValues = {
@@ -38,10 +39,18 @@ export default class BeerCard extends React.Component{
         super(props);
         this.state={           
             elevation:2,
-            fav:false
+            fav:false,
+            open:false
         }
     }
 
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            fav:nextProps.fav
+        })
+    }
+
+    
     handleMouseEnter = () => () =>{
         this.setState({elevation:10});
     }
@@ -50,24 +59,39 @@ export default class BeerCard extends React.Component{
         this.setState({elevation:2});
     }
 
-    handleChange = () => (event) =>{
+    handleChange = (event) =>{
         this.setState({fav:event.target.checked});
+        this.props.favs.push({
+            id:this.props.id,
+            name:this.props.name,
+            tagline:this.props.tag
+        })
+    
+        console.log(this.props.favs);
     }
 
+    handleClickOpen = () => {
+        this.setState({open:true});
+    }
+    
+    handleClose = () => {
+        this.setState({open:false});
+    }
+
+    
     render(){
-        const { elevation, fav } = this.state;
         return(
             <React.Fragment>
             
             <MuiThemeProvider theme={theme}>
-
+                <BeerDialog onClose={this.handleClose} open={this.state.open} id={this.props.id} tag={this.props.tag} name={this.props.name} img={this.props.image_url}/>
                 <Grid item xs={12} md={6} lg={4}>
-                    <Paper style={{position:'relative', zIndex:1}} onMouseEnter={this.handleMouseEnter()} onMouseLeave={this.handleMouseLeave()} id={this.props.id} elevation={this.state.elevation} className="beer-container">
+                    <Paper onClick={this.handleClickOpen} style={{position:'relative', zIndex:1}} onMouseEnter={this.handleMouseEnter()} onMouseLeave={this.handleMouseLeave()} id={this.props.id} elevation={this.state.elevation} className="beer-container">
                             <FormControlLabel
                                 className='fav-btn'
                                 control={
                                     <MuiThemeProvider theme={theme}>
-                                        <Checkbox checked={fav} onChange={this.handleChange()} icon={<StarBorder/>} color='default' checkedIcon={<Star/>} value='checked'/>
+                                        <Checkbox checked={this.state.fav} onChange={this.handleChange} icon={<StarBorder/>} color='default' checkedIcon={<Star/>} value='checked'/>
                                     </MuiThemeProvider>
                                 }
                             />
