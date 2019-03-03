@@ -39,6 +39,16 @@ export default class BeerGrid extends React.Component{
         this.scrollListener = window.addEventListener('scroll', (e)=>{
             this.handleScroll(e)
         })
+
+        let favoritesArray = JSON.parse(sessionStorage.getItem('favorites'));
+        if(favoritesArray === undefined || favoritesArray === null || favoritesArray.length === 0){
+            let favArr = [];
+            sessionStorage.setItem('favorites', JSON.stringify(favArr)); 
+            console.log('Favorites session storage array created!')                
+        }
+        else{
+            return
+        }
     }
 
     handleScroll = (e) => {

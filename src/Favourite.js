@@ -41,7 +41,7 @@ export default class Favourite extends React.Component{
 
     showFavorites = () =>{
         let favs = JSON.parse(sessionStorage.getItem('favorites'));
-        console.log(favs);
+        console.log(favs)
         return favs.map((fav)=>
             <BeerCard id={fav.id} key={fav.id} tag={fav.tagline} name={fav.name} img={fav.img} description={fav.description} abv={fav.abv} ibu={fav.ibu} ebc={fav.ebc} foodPairing={fav.foodPairing} isFav={true} />
         )

@@ -76,7 +76,7 @@ export default class BeerDialog extends React.Component{
                 >
                     <DialogContent >
                         <div className='dialog-container'>
-                            <CloseIcon style={{position:'absolute', right:0, top:0, margin:'5px'}} onClick={this.props.onClose}/>
+                            <CloseIcon style={{position:'absolute', color:'rgb(161, 161, 161)', right:0, top:0, margin:'10px'}} onClick={this.props.onClose}/>
                             <img className='dialog-img' src={this.props.img}/>
                         <div className='dialog-content'>
                         <h1 className='beer-name-dialog'>{this.props.name}</h1>
