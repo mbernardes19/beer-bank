@@ -74,10 +74,11 @@ export default class Header extends React.Component{
                     <Sticky>
                         <nav>
                             <div id='navbar'>
-                                <HashRouter>
-                                <Link className='link' to="/">HOME</Link>
-                                <Link className='link' to="/favourite">FAVOURITE</Link>
-                                </HashRouter>
+                                
+                                    
+                                    <Link className='link' to="/">HOME</Link>
+                                    <Link className='link' to="/favourite">FAVOURITE</Link>
+                                
                             </div>
                         </nav>
                        

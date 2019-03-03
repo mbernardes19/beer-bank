@@ -2,9 +2,7 @@ const path = require('path');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: {
-        index: ['babel-polyfill',path.join(__dirname,'/src/App.js')]
-    },
+    entry: ['babel-polyfill',path.join(__dirname,'/src/App.js')],
     output: {
         path: path.join(__dirname,'/dist/'),
         filename: '[name].bundle.js',
@@ -20,7 +18,6 @@ module.exports = {
     plugins: [
         new htmlWebpackPlugin({
             hash:true,
-            chunks: ['index'],
             filename: 'index.html',
             template: path.join(__dirname,'/public/index.html')
         })
