@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Link} from 'react-router-dom';
+import {HashRouter, Link} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/core/styles';
@@ -74,8 +74,10 @@ export default class Header extends React.Component{
                     <Sticky>
                         <nav>
                             <div id='navbar'>
+                                <HashRouter>
                                 <Link className='link' to="/">HOME</Link>
                                 <Link className='link' to="/favourite">FAVOURITE</Link>
+                                </HashRouter>
                             </div>
                         </nav>
                        

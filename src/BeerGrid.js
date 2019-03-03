@@ -163,7 +163,6 @@ export default class BeerGrid extends React.Component{
                    
                    
             </MuiThemeProvider>
-
             </React.Fragment>
 
 

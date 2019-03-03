@@ -22,7 +22,7 @@
   "keywords": [],
   "author": "Matheus Bernardes",
   "license": "ISC",
-  "homepage": "https://github.com/mbernardes19/beer-bank.git",
+  "homepage": "https://mbernardes19.github.io/beer-bank/",
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",

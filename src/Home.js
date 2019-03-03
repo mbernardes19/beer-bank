@@ -9,7 +9,7 @@ import './../public/style.css';
 import BeerCard from './BeerCard';
 import BeerGrid from './BeerGrid';
 import InfiniteScroll from 'react-infinite-scroller';
-import babelPolyfill from 'babel-polyfill';
+
 
 const breakpointValues = {
     xs: 0,

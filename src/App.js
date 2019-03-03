@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter, Switch, Route, Router, Link} from 'react-router-dom';
+import {HashRouter, Switch, Route, Router, Link} from 'react-router-dom';
 import Home from './Home';
 import Favourite from './Favourite';
 import Grid from '@material-ui/core/Grid';
@@ -17,14 +17,15 @@ export default class App extends React.Component{
     }
     
     render(){
+        const baseUrl = process.env.PUBLIC_URL;
         return(
-            <BrowserRouter>
+            <HashRouter>
                 <Switch>
                     <Route path='/' exact={true} component={Home}/>
-                    <Route path='/favourite' component={Favourite}/>
+                    <Route path= '/favourite' component={Favourite}/>
                     <Route path='/advanced-search' component={AdvSearch}/>
                 </Switch>
-            </BrowserRouter>
+            </HashRouter>
         );
     }
 
