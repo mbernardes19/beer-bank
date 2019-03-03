@@ -24,6 +24,7 @@ export default class Favourite extends React.Component{
         this.state={           
             favBeers:[]
         }
+        //this.update = this.update.bind(this);
     }
     
     componentDidMount(){
@@ -38,12 +39,16 @@ export default class Favourite extends React.Component{
         })
     }
 
+    update = () => {
+        this.forceUpdate();
+    }
+
 
     showFavorites = () =>{
         let favs = JSON.parse(sessionStorage.getItem('favorites'));
         console.log(favs)
         return favs.map((fav)=>
-            <BeerCard id={fav.id} key={fav.id} tag={fav.tagline} name={fav.name} img={fav.img} description={fav.description} abv={fav.abv} ibu={fav.ibu} ebc={fav.ebc} foodPairing={fav.foodPairing} isFav={true} />
+            <BeerCard id={fav.id} key={fav.id} tag={fav.tagline} name={fav.name} img={fav.img} description={fav.description} abv={fav.abv} ibu={fav.ibu} ebc={fav.ebc} foodPairing={fav.foodPairing} isFav={true} updateFav={this.showFavorites} updateComponent={this.update} />
         )
     }
 

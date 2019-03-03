@@ -99,19 +99,10 @@ export default class BeerCard extends React.Component{
             let newArr = JSON.parse(sessionStorage.getItem('favorites')).filter((fav)=>{
                return fav.id !== this.props.id
             });
-
-
-
-            /*if(index > -1){
-                sessionStorage.setItem('favorites',JSON.stringify(JSON.parse(sessionStorage.getItem('favorites')).splice(index,1)));
-                console.log('Nova array de favs:');
-                console.log(sessionStorage.getItem('favorites'));
-            }
-            */
-
-            this.forceUpdate();
+            
             sessionStorage.setItem('favorites',JSON.stringify(newArr));
             console.log(JSON.parse(sessionStorage.getItem('favorites')));
+            this.props.updateComponent();
         }
         
         

@@ -8,6 +8,8 @@ import Paper from '@material-ui/core/Paper';
 import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/core/styles';
 import './../public/style.css';
 import BeerCard from './BeerCard';
+import AdvSearch from './AdvSearch';
+
 
 export default class App extends React.Component{
     constructor(props){
@@ -20,6 +22,7 @@ export default class App extends React.Component{
                 <Switch>
                     <Route path='/' exact={true} component={Home}/>
                     <Route path='/favourite' component={Favourite}/>
+                    <Route path='/advanced-search' component={AdvSearch}/>
                 </Switch>
             </BrowserRouter>
         );

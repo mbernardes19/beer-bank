@@ -80,7 +80,7 @@ export default class BeerDialog extends React.Component{
                             <img className='dialog-img' src={this.props.img}/>
                         <div className='dialog-content'>
                         <h1 className='beer-name-dialog'>{this.props.name}</h1>
-                        <p>{this.props.tag}</p>
+                        <p className='dialog-tag'>{this.props.tag}</p>
                         <p>
                             <span><strong>IBU:</strong> {this.props.ibu} &nbsp;</span>
                             <span><strong>ABV:</strong> {this.props.abv}% &nbsp;</span>
@@ -89,10 +89,8 @@ export default class BeerDialog extends React.Component{
                         <p>
                             {this.props.description}
                         </p>
-                        <p>
                            <strong>Best served with:</strong>
-                        </p>
-                           <ul>
+                           <ul className='dialog-food'>
                             {foodPairing}
                             </ul> 
                         </div>

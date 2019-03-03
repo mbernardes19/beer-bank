@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Link} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Header from './Header';
@@ -10,6 +9,10 @@ import BeerCard from './BeerCard';
 import Favourite from './Favourite';
 import Hidden from '@material-ui/core/Hidden';
 import InfiniteScroll from 'react-infinite-scroller';
+import {BrowserRouter, Switch, Route, Router, Link} from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { orange } from '@material-ui/core/colors';
+import AdvSearchForm from './AdvSearchForm';
 
 const breakpointValues = {
     xs: 0,
@@ -29,7 +32,9 @@ export default class BeerGrid extends React.Component{
             per_page: 25,
             page: 1,
             totalPages: null,
-            scrolling: false
+            scrolling: false,
+            loading:true,
+            advSearch:true
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -72,7 +77,8 @@ export default class BeerGrid extends React.Component{
         this.setState({
             fetchedBeers:[...fetchedBeers, ...data],
             scrolling: false,
-            totalPages: 10
+            totalPages: 10,
+            loading:false
         })
         return this.state.fetchedBeers;
     }
@@ -110,17 +116,41 @@ export default class BeerGrid extends React.Component{
 
     }
 
+    load = () =>{
+        while(this.state.loading === true){
+          console.log('tchau')
+          return(
+            <div style={{color:'orange'}}>
+              <CircularProgress color='inherit'/>
+            </div>
+          );
+        }
+
+    }
+
+    showAdvSearch = () => {
+        this.setState({advSearch:!this.state.advSearch});
+    }
+
     render(){
-        const loader = <p>Loading...</p>
         return(
             <React.Fragment>
             <MuiThemeProvider theme={theme}>
                 <Grid item xs={12}>
-                    <div style={{backgroundColor:'orange', paddingBottom:20}}>
-                        <input id='search-input' type='text' onChange={this.handleChange} placeholder='Search for beer name'/>
+                    <div style={{backgroundColor:'orange', paddingBottom:40, position:'relative'}}>
+                        <div className='search-container'>
+                            <input id='search-input' type='text' onChange={this.handleChange} placeholder='Search for beer name'/>
+                            <a onClick={this.showAdvSearch}  className='adv-search-link'>Advanced search</a>
+                        </div>
                     </div>
+                    <Hidden xsDown={this.state.advSearch} xsUp={this.state.advSearch}>
+                        <AdvSearchForm/>
+                    </Hidden>
                 </Grid>
-                
+                    {
+                        this.load()
+                    } 
+
                     {
                         this.state.fetchedBeers.map((beer)=>
                             <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url} description={beer.description} abv={beer.abv} ibu={beer.ibu} ebc={beer.ebc} foodPairing={beer.food_pairing} favs={this.state.favouriteBeers}/>
