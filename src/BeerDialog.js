@@ -16,6 +16,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 import CloseIcon from '@material-ui/icons/Close';
 import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
+import babelPolyfill from 'babel-polyfill';
 
 const breakpointValues = {
     xs: 0,

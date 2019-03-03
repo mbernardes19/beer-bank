@@ -9,7 +9,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/core/styles';
 import './../public/style.css';
 import BeerDialog from './BeerDialog';
-
+import babelPolyfill from 'babel-polyfill';
 
 const breakpointValues = {
     xs: 0,

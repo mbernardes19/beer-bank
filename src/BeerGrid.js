@@ -13,6 +13,8 @@ import {BrowserRouter, Switch, Route, Router, Link} from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { orange } from '@material-ui/core/colors';
 import AdvSearchForm from './AdvSearchForm';
+import babelPolyfill from 'babel-polyfill';
+
 
 const breakpointValues = {
     xs: 0,
