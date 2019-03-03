@@ -58,7 +58,7 @@ export default class Favourite extends React.Component{
                 <Grid justify='center' container>
                     <Header/>
     
-                    {this.showFavorites()};
+                    {this.showFavorites()}
                 </Grid>
             </React.Fragment>
         );
