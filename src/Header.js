@@ -1,15 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {HashRouter, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/core/styles';
 import './../public/style.css';
-import BeerCard from './BeerCard';
 import Sticky from 'react-sticky-el';
-import Fuse from 'fuse.js';
-
-
 
 export default class Header extends React.Component{
     constructor(props){
@@ -33,28 +26,6 @@ export default class Header extends React.Component{
             searchQuery: isCheckbox ?
             event.target.checked : event.target.value
         })}
-/*
-    async search((str) => {
-        let options = {
-            shouldSort: true,
-            threshold: 0.6,
-            location: 0,
-            distance: 100,
-            maxPatternLength: 32,
-            minMatchCharLength: 1,
-            keys: [
-              "name",
-              "tagline",
-              "description"
-            ]
-        });
-        let beers = await this.getBeers();
-        let fuse = new Fuse(beers,options);
-        let result = fuse.search(str);
-        this.setState({searchQuery:result});
-        console.log(result);
-    }
-        */
 
     componentDidMount(){
         this.setState({
