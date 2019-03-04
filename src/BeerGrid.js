@@ -8,7 +8,6 @@ import './../public/style.css';
 import BeerCard from './BeerCard';
 import Favourite from './Favourite';
 import Hidden from '@material-ui/core/Hidden';
-import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { orange } from '@material-ui/core/colors';
 import AdvSearchForm from './AdvSearchForm';

@@ -17,14 +17,17 @@ export default class App extends React.Component{
     }
     
     render(){
+        //
+        //NÃO ESQUECER DE ADICIONAR O BASEURL
+        //
         const baseUrl = '/beer-bank';
         return(
             <React.Fragment>
             <BrowserRouter>
                 <Switch>
-                    <Route path={baseUrl + '/'} exact={true} component={Home}/>
-                    <Route path= {baseUrl + '/favourite'} component={Favourite}/>
-                    <Route path={baseUrl + '/advanced-search'} component={AdvSearch}/>
+                    <Route path={'/'} exact={true} component={Home}/>
+                    <Route path= {'/favourite'} component={Favourite}/>
+                    <Route path={'/advanced-search'} component={AdvSearch}/>
                 </Switch>
             </BrowserRouter>
             </React.Fragment>

@@ -1,22 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {Link} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Header from './Header';
-import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/core/styles';
 import './../public/style.css';
 import BeerCard from './BeerCard';
-import FavouriteBeerGrid from './FavouriteBeerGrid';
-
-const breakpointValues = {
-    xs: 0,
-    sm: 638,
-    md: 768,
-    lg: 992,
-    xl: 1200,
-  };
-  const theme = createMuiTheme({ breakpoints: { values: breakpointValues } });
 
 export default class Favourite extends React.Component{
     constructor(props){
@@ -24,25 +10,11 @@ export default class Favourite extends React.Component{
         this.state={           
             favBeers:[]
         }
-        //this.update = this.update.bind(this);
-    }
-    
-    componentDidMount(){
-        this.setState({
-            favBeers:this.props.favourites
-        });
-    }
-
-    componentWillReceiveProps(nextProps){
-        this.setState({
-            favBeers:nextProps.favourites
-        })
     }
 
     update = () => {
         this.forceUpdate();
     }
-
 
     showFavorites = () =>{
         let favs = JSON.parse(sessionStorage.getItem('favorites'));
@@ -57,7 +29,6 @@ export default class Favourite extends React.Component{
             <React.Fragment>
                 <Grid justify='center' container>
                     <Header/>
-    
                     {this.showFavorites()}
                 </Grid>
             </React.Fragment>

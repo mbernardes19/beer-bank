@@ -8,7 +8,6 @@ import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/
 import './../public/style.css';
 import BeerCard from './BeerCard';
 import BeerGrid from './BeerGrid';
-import InfiniteScroll from 'react-infinite-scroller';
 import AdvSearchForm from './AdvSearchForm';
 
 const breakpointValues = {
