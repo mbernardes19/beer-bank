@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Star from '@material-ui/icons/Star';
@@ -11,6 +10,7 @@ import './../public/style.css';
 import BeerDialog from './BeerDialog';
 import babelPolyfill from 'babel-polyfill';
 
+//Custom breakpoints for Beer Cards
 const breakpointValues = {
     xs: 0,
     sm: 638,
@@ -24,12 +24,12 @@ const breakpointValues = {
     overrides:{
        MuiCheckbox:{
             checked:{
-                color:'#FFA500',
+                color:'#FFA500', //Color of the checked Favorite Button
             }
        },
   },
   typography: {
-      useNextVariants: true,
+      useNextVariants: true, //this sets Material UI Typography ready to change on next update
     },
   });
 
@@ -39,30 +39,15 @@ export default class BeerCard extends React.Component{
         super(props);
         this.state={           
             elevation:2,
-            favHome: Boolean(sessionStorage.getItem('favHome')),
-            fav:this.props.isFav || false,
+            fav: false,
             open:false
         }
     }
-
-    componentDidMount(){
-        let favoritesArray = JSON.parse(sessionStorage.getItem('favorites'));
-        if(favoritesArray === undefined || favoritesArray === null || favoritesArray.length === 0){
-            console.log('oi!')
-            return              
-        }
-        else{
-        let favorites = JSON.parse(sessionStorage.getItem('favorites'));
-        let index = favorites.findIndex(fav => fav.id === this.props.id);
-        if(index > -1){
-            sessionStorage.setItem('favHome', 'true')
-            let favHome = Boolean(sessionStorage.getItem('favHome'));
-            this.setState({fav:favHome});
-        }
-    }
-        
-    }
     
+    // 
+    // ========== HANDLER FUNCTIONS ==========
+    //
+
     handleMouseEnter = () => () =>{
         this.setState({elevation:10});
     }
@@ -71,79 +56,119 @@ export default class BeerCard extends React.Component{
         this.setState({elevation:2});
     }
 
-    handleChange = (event) =>{
+    handleFavoriteChange = (event) =>{
         this.setState({fav:event.target.checked});
+
         if(this.state.fav == false){
-            let favArr = JSON.parse(sessionStorage.getItem('favorites'));
-            favArr.push({
-                id:this.props.id,
-                name:this.props.name,
-                img: this.props.img,
-                tagline: this.props.tag,
-                descripton: this.props.description,
-                abv: this.props.abv,
-                ibu: this.props.ibu,
-                ebc: this.props.ebc,
-                foodPairing: this.props.foodPairing,
-                isFav: this.state.fav
-            });
-            let favHome = sessionStorage.setItem('favHome','true');
-            this.setState({favHome:favHome});
-            console.log(favArr);
-            sessionStorage.setItem('favorites',JSON.stringify(favArr));
-            console.log(sessionStorage.getItem('favorites'));
-            console.log(JSON.parse(sessionStorage.getItem('favorites')));
+           this.insertInFavorites();
         }
         else {
-            let index = JSON.parse(sessionStorage.getItem('favorites')).findIndex(fav => fav.id === this.props.id);
-            let newArr = JSON.parse(sessionStorage.getItem('favorites')).filter((fav)=>{
-               return fav.id !== this.props.id
-            });
-            
-            sessionStorage.setItem('favorites',JSON.stringify(newArr));
-            console.log(JSON.parse(sessionStorage.getItem('favorites')));
-            this.props.updateComponent();
+           this.removeFromFavorites();
         }
-        
-        
     }
 
-    handleClickOpen = () => {
+    handleClickOpenDialog = () => {
         this.setState({open:true});
     }
     
-    handleClose = () => {
+    handleCloseDialog = () => {
         this.setState({open:false});
     }
 
+    // 
+    // ========== OTHER FUNCTIONS ==========
+    //
+
+    checkIfFavoritesExist = () =>  {
+        let favoritesArray = JSON.parse(sessionStorage.getItem('favorites'));
+        if (favoritesArray === undefined || favoritesArray === null || favoritesArray.length === 0)
+            return false;
+        else
+            return favoritesArray;
+    }
+        
+    checkIfIsFavorite = (favoritesArray) => {
+        if(favoritesArray == false)
+            return false;
+        else {
+            let index = favoritesArray.findIndex(fav => fav.id === this.props.id);
+            if(index > -1)
+                return true;
+            else
+                return false;
+        }
+    }
+
+    setAsFavorite = (fav) => {
+        if(fav){
+            sessionStorage.setItem('isFavorite', 'true')
+            let isFavorite = Boolean(sessionStorage.getItem('isFavorite'));
+            this.setState({fav:isFavorite});
+        }
+        else
+            return
+    }
+
+    insertInFavorites = () => {
+        let favoritesArray = JSON.parse(sessionStorage.getItem('favorites'));
+        favoritesArray.push({
+            id:this.props.id,
+            name:this.props.name,
+            img: this.props.img,
+            tagline: this.props.tag,
+            descripton: this.props.description,
+            abv: this.props.abv,
+            ibu: this.props.ibu,
+            ebc: this.props.ebc,
+            foodPairing: this.props.foodPairing,
+            isFav: this.state.fav
+        });
+        sessionStorage.setItem('favorites',JSON.stringify(favoritesArray));
+    }
+
+    removeFromFavorites = () => {
+        let favoritesArray = JSON.parse(sessionStorage.getItem('favorites'));
+        let newFavoritesArray = favoritesArray.filter((fav)=>{
+            return fav.id !== this.props.id
+        });
+            
+        sessionStorage.setItem('favorites',JSON.stringify(newFavoritesArray));
+        this.props.updateComponent();
+    }
+
+    // 
+    // ========== LIFE CYCLE FUNCTIONS ==========
+    //
     
+    componentDidMount(){
+        let favArr = this.checkIfFavoritesExist();
+        let isFav = this.checkIfIsFavorite(favArr);
+        isFav ? this.setAsFavorite(isFav) : this.setState({fav:false});
+    }
+
     render(){
         return(
             <React.Fragment>
             
             <MuiThemeProvider theme={theme}>
-                <BeerDialog onClose={this.handleClose} open={this.state.open} id={this.props.id} tag={this.props.tag} name={this.props.name} img={this.props.img} description={this.props.description} abv={this.props.abv} ibu={this.props.ibu} ebc={this.props.ebc} foodPairing={this.props.foodPairing}/>
+                <BeerDialog onClose={this.handleCloseDialog} open={this.state.open} id={this.props.id} tag={this.props.tag} name={this.props.name} img={this.props.img} description={this.props.description} abv={this.props.abv} ibu={this.props.ibu} ebc={this.props.ebc} foodPairing={this.props.foodPairing}/>
                 <Grid className='beercard' item xs={12} md={6} lg={4}>
                     <FormControlLabel className='fav-btn'
                                 control={
                                     <MuiThemeProvider theme={theme}>
-                                        <Checkbox checked={this.state.fav} onChange={this.handleChange} icon={<StarBorder/>} color='default' checkedIcon={<Star/>} value='checked'/>
+                                        <Checkbox checked={this.state.fav} onChange={this.handleFavoriteChange} icon={<StarBorder/>} color='default' checkedIcon={<Star/>} value='checked'/>
                                     </MuiThemeProvider>
                                 }
                     />
-                    <Paper onClick={this.handleClickOpen} style={{position:'relative', zIndex:0, padding:'20px', height:'350px'}} onMouseEnter={this.handleMouseEnter()} onMouseLeave={this.handleMouseLeave()} id={this.props.id} elevation={this.state.elevation} className="beer-container">
-                            
+                    <Paper className="beer-container" onClick={this.handleClickOpenDialog} onMouseEnter={this.handleMouseEnter()} onMouseLeave={this.handleMouseLeave()} id={this.props.id} elevation={this.state.elevation}>        
                         <img className="beer-img" src={this.props.img}></img>
                         <h1 className="beer-name">{this.props.name}</h1>
                         <p className="beer-tag">{this.props.tag}</p>
                     </Paper>
                 </Grid>
-
             </MuiThemeProvider>
+
             </React.Fragment>
-
-
-
         );
     }
 

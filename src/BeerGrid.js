@@ -1,18 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Header from './Header';
-import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/core/styles';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import './../public/style.css';
 import BeerCard from './BeerCard';
-import Favourite from './Favourite';
 import Hidden from '@material-ui/core/Hidden';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { orange } from '@material-ui/core/colors';
-import AdvSearchForm from './AdvSearchForm';
 import babelPolyfill from 'babel-polyfill';
-
+import AdvSearchForm from './AdvSearchForm';
 
 const breakpointValues = {
     xs: 0,
@@ -21,7 +15,8 @@ const breakpointValues = {
     lg: 992,
     xl: 1200,
   };
-  const theme = createMuiTheme({ breakpoints: { values: breakpointValues } });
+
+const theme = createMuiTheme({ breakpoints: { values: breakpointValues } });
 
 export default class BeerGrid extends React.Component{
     constructor(props){
@@ -36,38 +31,12 @@ export default class BeerGrid extends React.Component{
             loading:true,
             advSearch:true
         };
-        this.handleChange = this.handleChange.bind(this);
+        this.handleSearchBarChange = this.handleSearchBarChange.bind(this);
     }
 
-    componentWillMount(){
-        this.getBeers();
-        this.scrollListener = window.addEventListener('scroll', (e)=>{
-            this.handleScroll(e)
-        })
-
-        let favoritesArray = JSON.parse(sessionStorage.getItem('favorites'));
-        if(favoritesArray === undefined || favoritesArray === null || favoritesArray.length === 0){
-            let favArr = [];
-            sessionStorage.setItem('favorites', JSON.stringify(favArr)); 
-            console.log('Favorites session storage array created!')                
-        }
-        else{
-            return
-        }
-    }
-
-    handleScroll = (e) => {
-        const {scrolling, totalPages, page} = this.state;
-        if(scrolling) return;
-        if(totalPages <= page) return;
-        const lastBeerCard = document.querySelector(`.grid > .beercard:last-child`);
-        console.log(lastBeerCard);
-        const lastBeerCardOffset = lastBeerCard.offsetTop + lastBeerCard.clientHeight;
-        const pageOffset = window.pageYOffset + window.innerHeight;
-        let bottomOffset = 60
-        if(pageOffset > lastBeerCardOffset - bottomOffset)
-            this.loadMore()
-    }
+    // 
+    // ========== INFINITE SCROLL FUNCTIONS ==========
+    //
 
     async getBeers(){
         const {per_page, page, fetchedBeers} = this.state;
@@ -83,63 +52,104 @@ export default class BeerGrid extends React.Component{
         return this.state.fetchedBeers;
     }
 
-    loadMore = () =>{
+    handleScroll = (e) => {
+        const {scrolling, totalPages, page} = this.state;
+        if(scrolling) return;
+        if(totalPages <= page) return;
+        const lastBeerCard = document.querySelector(`.grid > .beercard:last-child`);
+        const lastBeerCardOffset = lastBeerCard.offsetTop + lastBeerCard.clientHeight;
+        const pageOffset = window.pageYOffset + window.innerHeight;
+        let bottomOffset = 60
+        if(pageOffset > lastBeerCardOffset - bottomOffset)
+            this.loadMore()
+    }
+
+    loadMore = () => {
         this.setState(prevState =>({
             page: prevState.page + 1,
             scrolling: true,
         }), this.getBeers)
      }
- 
 
-    async handleChange(e){
-        let currentBeers = [];
+    // 
+    // ========== SEARCH BAR FUNCTION ==========
+    //
+
+    async handleSearchBarChange(e){
         let newBeers = [];
-        let fetchQueryBeers = [];
-        let queryBeers = [];
 
         if(e.target.value !== ""){
             const query = e.target.value.toLowerCase();
             const url = `https://api.punkapi.com/v2/beers?beer_name=${query}`;
-            currentBeers = this.state.fetchedBeers;
-            fetchQueryBeers = await fetch(url);
-            queryBeers = await fetchQueryBeers.json();
-            newBeers = await queryBeers;
+            let response = await fetch(url);
+            let data = await response.json();
+            newBeers = await data;
         } else {
-            fetchQueryBeers = await fetch('https://api.punkapi.com/v2/beers');
-            queryBeers = await fetchQueryBeers.json();
-            newBeers = await queryBeers;
+            let response = await fetch('https://api.punkapi.com/v2/beers');
+            let data = await response.json();
+            newBeers = await data;
         }
         this.setState({
             fetchedBeers: newBeers
         });
-        {console.log(this.state.fetchedBeers)}
+    }
+    
+    // 
+    // ========== OTHER FUNCTIONS ==========
+    //
 
+    checkIfFavoritesExist = () =>  {
+        let favoritesArray = JSON.parse(sessionStorage.getItem('favorites'));
+        if (favoritesArray === undefined || favoritesArray === null || favoritesArray.length === 0){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
-    load = () =>{
-        while(this.state.loading === true){
-          console.log('tchau')
+    createFavoritesArray = () => {
+        let favArr = [];
+        sessionStorage.setItem('favorites', JSON.stringify(favArr)); 
+    }
+
+    load = () => {
+        while(this.state.loading){
           return(
             <div style={{color:'orange'}}>
               <CircularProgress color='inherit'/>
             </div>
           );
         }
-
     }
 
     showAdvSearch = () => {
         this.setState({advSearch:!this.state.advSearch});
     }
 
+    // 
+    // ========== LIFE CYCLE FUNCTIONS ==========
+    //
+
+    componentWillMount(){
+        this.getBeers();
+        this.scrollListener = window.addEventListener('scroll', (e)=>{
+            this.handleScroll(e)
+        })
+
+        let favArr = this.checkIfFavoritesExist();
+        favArr ? true : this.createFavoritesArray();
+    }
+
     render(){
         return(
             <React.Fragment>
+
             <MuiThemeProvider theme={theme}>
                 <Grid item xs={12}>
                     <div style={{backgroundColor:'orange', paddingBottom:40, position:'relative'}}>
                         <div className='search-container'>
-                            <input id='search-input' type='text' onChange={this.handleChange} placeholder='Search for beer name'/>
+                            <input id='search-input' type='text' onChange={this.handleSearchBarChange} placeholder='Search for beer name'/>
                             <a onClick={this.showAdvSearch}  className='adv-search-link'>Advanced search</a>
                         </div>
                     </div>
@@ -147,6 +157,7 @@ export default class BeerGrid extends React.Component{
                         <AdvSearchForm/>
                     </Hidden>
                 </Grid>
+
                     {
                         this.load()
                     } 
@@ -156,15 +167,9 @@ export default class BeerGrid extends React.Component{
                             <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url} description={beer.description} abv={beer.abv} ibu={beer.ibu} ebc={beer.ebc} foodPairing={beer.food_pairing} favs={this.state.favouriteBeers}/>
                         )
                     }
-                    {console.log(`Fetched beers:`)}
-                    {console.log(this.state.fetchedBeers)}
-                   
-                   
             </MuiThemeProvider>
+
             </React.Fragment>
-
-
-
         );
     }
 

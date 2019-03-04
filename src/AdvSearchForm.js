@@ -1,13 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {Link} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Header from './Header';
 import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/core/styles';
 import './../public/style.css';
-import BeerCard from './BeerCard';
-import BeerGrid from './BeerGrid';
 import Slider from '@material-ui/lab/Slider';
 
 const breakpointValues = {
