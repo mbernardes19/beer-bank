@@ -63,7 +63,7 @@ export default class AdvSearchForm extends React.Component{
                 <div style={{width:'100%', height:'50px', backgroundColor:'#dddddd', position:'relative',zIndex:100, margin:'0 auto'}}>
                 <p>Min ABV:</p>
                 <Slider
-                    style={{padding:'0'}}
+                    style={{paddingLeft:'10px'}}
                     value={this.state.ltAbv}
                     min={0}
                     max={55}

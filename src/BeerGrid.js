@@ -29,7 +29,9 @@ export default class BeerGrid extends React.Component{
             totalPages: null,
             scrolling: false,
             loading:true,
-            advSearch:true
+            advSearch:true,
+            error: false,
+            loadMore: false
         };
         this.handleSearchBarChange = this.handleSearchBarChange.bind(this);
     }
@@ -53,9 +55,10 @@ export default class BeerGrid extends React.Component{
             })
             return this.state.fetchedBeers;
         }
-        catch(error){
+        catch(err){
             this.setState({
-                loading:false
+                loading:false,
+                error:true
             })
         }
         
@@ -77,6 +80,7 @@ export default class BeerGrid extends React.Component{
         this.setState(prevState =>({
             page: prevState.page + 1,
             scrolling: true,
+            loadMore: true,
         }), this.getBeers)
      }
 
@@ -130,16 +134,28 @@ export default class BeerGrid extends React.Component{
             </div>
           );
         }
-        return(
-        <div style={{marginTop:'50px'}}>
-            <p>    
-                Couldn't get beers ):
-            </p>
-            <p>
-                Please, check your internet connection
-            </p>
-        </div>
-        );
+        if(this.state.error){
+            return(
+            <div style={{marginTop:'50px'}}>
+                <p>    
+                    Couldn't get beers ):
+                </p>
+                <p>
+                    Please, check your internet connection
+                </p>
+            </div>
+            );
+        }
+    }
+
+    loadScroll = () => {
+        while(this.state.loadMore){
+            return(
+                <div style={{color:'orange', marginTop:'50px'}}>
+                  <CircularProgress color='inherit'/>
+                </div>
+            );
+        }
     }
 
     showAdvSearch = () => {
@@ -150,7 +166,7 @@ export default class BeerGrid extends React.Component{
     // ========== LIFE CYCLE FUNCTIONS ==========
     //
 
-    componentWillMount(){
+    componentDidMount(){
         this.getBeers();
         this.scrollListener = window.addEventListener('scroll', (e)=>{
             this.handleScroll(e)
@@ -169,7 +185,7 @@ export default class BeerGrid extends React.Component{
                     <div style={{backgroundColor:'orange', paddingBottom:40, position:'relative'}}>
                         <div className='search-container'>
                             <input id='search-input' type='text' onChange={this.handleSearchBarChange} placeholder='Search for beer name'/>
-                            <a onClick={this.showAdvSearch}  className='adv-search-link'>Advanced search</a>
+                            <a onClick={this.showAdvSearch} style={{cursor:'pointer'}} className='adv-search-link'>Advanced search</a>
                         </div>
                     </div>
                     <Hidden xsDown={this.state.advSearch} xsUp={this.state.advSearch}>
@@ -183,7 +199,7 @@ export default class BeerGrid extends React.Component{
 
                     {
                         this.state.fetchedBeers.map((beer)=>
-                            <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url} description={beer.description} abv={beer.abv} ibu={beer.ibu} ebc={beer.ebc} foodPairing={beer.food_pairing} hops={beer.hops} yeast={beer.yeast} malt={beer.malt} favs={this.state.favouriteBeers}/>
+                            <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url} description={beer.description} abv={beer.abv} ibu={beer.ibu} ebc={beer.ebc} foodPairing={beer.food_pairing} hops={beer.ingredients.hops} yeast={beer.ingredients.yeast} malt={beer.ingredients.malt} favs={this.state.favouriteBeers}/>
                         )
                     }
             </MuiThemeProvider>

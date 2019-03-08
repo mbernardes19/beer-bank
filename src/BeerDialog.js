@@ -3,6 +3,8 @@ import './../public/style.css';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import CloseIcon from '@material-ui/icons/Close';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 const breakpointValues = {
     xs: 0,
@@ -22,21 +24,6 @@ export default class BeerDialog extends React.Component{
         }
     }
 
-    async getBeers(){
-        let malt = this.props.malt;
-        let hops = this.props.hops;
-        let yeast = this.props.yeast;
-        const url = `https://api.punkapi.com/v2/beers?malt=${malt}&hops=${hops}&yeast=${yeast}`;
-        try{
-            let response = await fetch(url);
-            let data = await response.json();
-            return data;
-        }
-        catch (error){
-            console.log(error);
-        }
-    }
-
     isMobile = () =>{
         if(window.outerWidth <= breakpointValues.md){
             return true;
@@ -44,9 +31,8 @@ export default class BeerDialog extends React.Component{
         return false
     }
     
-   async componentDidMount(){
-        this.setState({relatedBeers:await this.getBeers()});
-        console.log(this.state.relatedBeers);
+    componentDidMount(){
+        
     }
 
     render(){
@@ -61,14 +47,23 @@ export default class BeerDialog extends React.Component{
             });
         }
 
-        let beerRelated = [];
-        if(this.state.relatedBeers){
-            beerRelated = this.state.relatedBeers.map((beer)=>{
-                return (
-                    <p>{beer.name}</p>
-                );
-            });
-        }
+        let relatedBeers=[];
+        if(this.props.related){
+                relatedBeers = this.props.related.map((beer)=>{
+                        return (
+                            <Grid className='beercard' item xs={12} md={6} lg={4}>
+                                <Paper style={{height:'220px'}} className="beer-container">
+                                    <img style={{height:'100px'}} src={beer.image_url}/>
+                                    <p style={{color:'rgb(141, 141, 141)',fontWeight:900}}>{beer.name}</p>
+                                </Paper>
+                            </Grid>
+                          );
+                    
+                });
+            }
+
+
+       
 
         return(
             <React.Fragment>            
@@ -100,10 +95,14 @@ export default class BeerDialog extends React.Component{
                             </div>
                         </div>
                         <div className='related-dialog'>
-                            <h4 className='subtitle-dialog'>
+                            <h2 className='subtitle-dialog'>
                                 You might also like:
-                            </h4>
-                            <p>{beerRelated}</p>
+                            </h2>
+                            <div>
+                                <Grid container>
+                                    {relatedBeers}
+                                </Grid>
+                            </div>
                         </div>
                     </DialogContent>                
                 </Dialog>

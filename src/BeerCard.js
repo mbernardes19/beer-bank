@@ -40,10 +40,31 @@ export default class BeerCard extends React.Component{
         this.state={           
             elevation:2,
             fav: false,
-            open:false
+            open:false,
+            relatedBeers: []
         }
     }
     
+    async getRelatedBeers(){
+        let yeast = this.props.yeast;
+        let malt = this.props.malt;   
+        let yeas = yeast.split(' ').join('_');
+        
+        let maltArr = malt.map((mal) =>{
+            return mal.name
+        });
+
+
+        let malSearch = maltArr[0].split(' ').join('_');
+
+        const url = `https://api.punkapi.com/v2/beers?yeast=${yeas}&page=1&per_page=3`;
+        let response = await fetch(url);
+        let data = await response.json();
+        this.setState({relatedBeers: await data});
+        return this.state.relatedBeers;
+    }
+
+
     // 
     // ========== HANDLER FUNCTIONS ==========
     //
@@ -141,6 +162,7 @@ export default class BeerCard extends React.Component{
     //
     
     componentDidMount(){
+        this.getRelatedBeers();
         let favArr = this.checkIfFavoritesExist();
         let isFav = this.checkIfIsFavorite(favArr);
         isFav ? this.setAsFavorite(isFav) : this.setState({fav:false});
@@ -151,7 +173,7 @@ export default class BeerCard extends React.Component{
             <React.Fragment>
             
             <MuiThemeProvider theme={theme}>
-                <BeerDialog onClose={this.handleCloseDialog} open={this.state.open} id={this.props.id} tag={this.props.tag} name={this.props.name} img={this.props.img} description={this.props.description} abv={this.props.abv} ibu={this.props.ibu} ebc={this.props.ebc} hops={this.props.hops} malt={this.props.malt} yeast={this.props.yeast} foodPairing={this.props.foodPairing}/>
+                <BeerDialog onClose={this.handleCloseDialog} open={this.state.open} id={this.props.id} tag={this.props.tag} name={this.props.name} img={this.props.img} description={this.props.description} abv={this.props.abv} ibu={this.props.ibu} ebc={this.props.ebc} hops={this.props.hops} malt={this.props.malt} yeast={this.props.yeast} related={this.state.relatedBeers} foodPairing={this.props.foodPairing}/>
                 <Grid className='beercard' item xs={12} md={6} lg={4}>
                     <FormControlLabel className='fav-btn'
                                 control={
