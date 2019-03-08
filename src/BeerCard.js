@@ -151,7 +151,7 @@ export default class BeerCard extends React.Component{
             <React.Fragment>
             
             <MuiThemeProvider theme={theme}>
-                <BeerDialog onClose={this.handleCloseDialog} open={this.state.open} id={this.props.id} tag={this.props.tag} name={this.props.name} img={this.props.img} description={this.props.description} abv={this.props.abv} ibu={this.props.ibu} ebc={this.props.ebc} foodPairing={this.props.foodPairing}/>
+                <BeerDialog onClose={this.handleCloseDialog} open={this.state.open} id={this.props.id} tag={this.props.tag} name={this.props.name} img={this.props.img} description={this.props.description} abv={this.props.abv} ibu={this.props.ibu} ebc={this.props.ebc} hops={this.props.hops} malt={this.props.malt} yeast={this.props.yeast} foodPairing={this.props.foodPairing}/>
                 <Grid className='beercard' item xs={12} md={6} lg={4}>
                     <FormControlLabel className='fav-btn'
                                 control={

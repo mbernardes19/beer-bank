@@ -17,7 +17,23 @@ export default class BeerDialog extends React.Component{
         super(props);
         this.state={           
             open:false,
-            fullScreen: false
+            fullScreen: false,
+            relatedBeers: []
+        }
+    }
+
+    async getBeers(){
+        let malt = this.props.malt;
+        let hops = this.props.hops;
+        let yeast = this.props.yeast;
+        const url = `https://api.punkapi.com/v2/beers?malt=${malt}&hops=${hops}&yeast=${yeast}`;
+        try{
+            let response = await fetch(url);
+            let data = await response.json();
+            return data;
+        }
+        catch (error){
+            console.log(error);
         }
     }
 
@@ -26,7 +42,12 @@ export default class BeerDialog extends React.Component{
             return true;
         }
         return false
-    } 
+    }
+    
+   async componentDidMount(){
+        this.setState({relatedBeers:await this.getBeers()});
+        console.log(this.state.relatedBeers);
+    }
 
     render(){
 
@@ -36,6 +57,15 @@ export default class BeerDialog extends React.Component{
             foodPairing = this.props.foodPairing.map((food)=>{
                 return (
                   <li key={food}>{food}</li>  
+                );
+            });
+        }
+
+        let beerRelated = [];
+        if(this.state.relatedBeers){
+            beerRelated = this.state.relatedBeers.map((beer)=>{
+                return (
+                    <p>{beer.name}</p>
                 );
             });
         }
@@ -73,6 +103,7 @@ export default class BeerDialog extends React.Component{
                             <h4 className='subtitle-dialog'>
                                 You might also like:
                             </h4>
+                            <p>{beerRelated}</p>
                         </div>
                     </DialogContent>                
                 </Dialog>
