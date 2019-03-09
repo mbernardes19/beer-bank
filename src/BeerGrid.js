@@ -32,7 +32,8 @@ export default class BeerGrid extends React.Component{
             advSearch:true,
             error: false,
             loadMore: false,
-            loadingAdvSearch: false
+            loadingAdvSearch: false,
+            advSearchMode: false
         };
         this.handleSearchBarChange = this.handleSearchBarChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -44,6 +45,9 @@ export default class BeerGrid extends React.Component{
     //
 
     async getBeers(){
+        if(this.state.advSearchMode){
+            return
+        } else {
         const {per_page, page, fetchedBeers} = this.state;
         const url = `https://api.punkapi.com/v2/beers?page=${page}&per_page=${per_page}`;
         try{
@@ -64,10 +68,15 @@ export default class BeerGrid extends React.Component{
                 error:true
             })
         }
-        
+        }
     }
 
     handleScroll = (e) => {
+        if(this.state.advSearchMode){
+            return
+        } else {
+
+        
         const {scrolling, totalPages, page} = this.state;
         if(scrolling) return;
         if(totalPages <= page) return;
@@ -77,6 +86,7 @@ export default class BeerGrid extends React.Component{
         let bottomOffset = 60
         if(pageOffset > lastBeerCardOffset - bottomOffset)
             this.loadMore()
+            }
     }
 
     loadMore = () => {
@@ -173,6 +183,7 @@ export default class BeerGrid extends React.Component{
 
     showAdvSearch = () => {
         this.setState({advSearch:!this.state.advSearch});
+        this.setState({advSearchMode:!this.state.advSearchMode});
     }
 
     // 

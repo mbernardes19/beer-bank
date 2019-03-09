@@ -51,7 +51,7 @@ export default class BeerDialog extends React.Component{
         if(this.props.related){
                 relatedBeers = this.props.related.map((beer)=>{
                         return (
-                            <Grid className='beercard' item xs={12} md={6} lg={4}>
+                            <Grid key={beer.id} className='beercard' item xs={12} md={6} lg={4}>
                                 <Paper style={{height:'220px'}} className="beer-container">
                                     <img style={{height:'100px'}} src={beer.image_url}/>
                                     <p style={{color:'rgb(141, 141, 141)',fontWeight:900}}>{beer.name}</p>

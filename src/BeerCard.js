@@ -46,18 +46,46 @@ export default class BeerCard extends React.Component{
     }
     
     async getRelatedBeers(){
-        let yeast = this.props.yeast;
-        let malt = this.props.malt;   
-        let yeas = yeast.split(' ').join('_');
+        let abv = this.props.abv;
+        let ibu = this.props.ibu;   
+
+        let maxAbv = '';
+        let minAbv = '';
+        let maxIbu = '';
+        let minIbu = '';
+
+        if(ibu <= 0){
+            maxIbu = Math.round(ibu + 20);
+            minIbu = Math.round(ibu + 12);    
+        } else {
+            maxIbu = Math.round(ibu + 20);
+            minIbu = Math.round(ibu - 20);
+        }
+        if(abv <= 0){
+            maxAbv = Math.round(abv + 3);
+            minAbv = Math.round(abv + 3);    
+        } else {
+            maxAbv = Math.round(abv + 2);
+            minAbv = Math.round(abv - 2);
+        }
+
+
+
+        if(maxIbu < 0){
+            maxIbu = Math.round(ibu + 12);
+        }
+        if(minIbu < 0){
+            minIbu = Math.round(ibu + 12);
+        }
+        if(maxAbv < 0){
+            maxAbv = Math.round(abv + 3);
+        }
+        if(minAbv < 0){
+            minAbv = Math.round(abv + 3);
+        }
         
-        let maltArr = malt.map((mal) =>{
-            return mal.name
-        });
 
-
-        let malSearch = maltArr[0].split(' ').join('_');
-
-        const url = `https://api.punkapi.com/v2/beers?yeast=${yeas}&page=1&per_page=3`;
+        const url = `https://api.punkapi.com/v2/beers?abv_lt=${maxAbv}&abv_gt=${minAbv}&ibu_lt=${maxIbu}&ibu_gt=${minIbu}&page=1&per_page=3`;
         let response = await fetch(url);
         let data = await response.json();
         this.setState({relatedBeers: await data});
