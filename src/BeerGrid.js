@@ -31,9 +31,12 @@ export default class BeerGrid extends React.Component{
             loading:true,
             advSearch:true,
             error: false,
-            loadMore: false
+            loadMore: false,
+            loadingAdvSearch: false
         };
         this.handleSearchBarChange = this.handleSearchBarChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+
     }
 
     // 
@@ -158,6 +161,16 @@ export default class BeerGrid extends React.Component{
         }
     }
 
+    loadAdvSearch = () => {
+        while(this.state.loadingAdvSearch){
+            return(
+                <div style={{color:'orange', marginTop:'50px'}}>
+                  <CircularProgress color='inherit'/>
+                </div>
+            );
+        }
+    }
+
     showAdvSearch = () => {
         this.setState({advSearch:!this.state.advSearch});
     }
@@ -176,6 +189,35 @@ export default class BeerGrid extends React.Component{
         favArr ? true : this.createFavoritesArray();
     }
 
+   async handleSubmit(e){
+        e.preventDefault();
+        let pairs = [];
+        let form = document.getElementById('form');
+        for(let i=0;i<form.elements.length;i++){
+            let e = form.elements[i];
+            console.log(e);
+            console.log(e.name);
+            console.log(e.value);
+            if(e.value){
+                if(e.value !== "0"){
+                    pairs.push(encodeURIComponent(e.name) + '=' + encodeURIComponent(e.value));
+                }          
+            }
+                
+        }
+        let queryString = pairs.join('&');
+        let fetchableUrl = form.getAttribute('action') + queryString;
+        console.log(fetchableUrl);
+
+        this.setState({loadingAdvSearch:true});
+        let response = await fetch(fetchableUrl);
+        let data = await response.json();
+        this.setState({fetchedBeers:data});
+        this.setState({loadingAdvSearch:false});
+
+    }
+
+
     render(){
         return(
             <React.Fragment>
@@ -189,7 +231,12 @@ export default class BeerGrid extends React.Component{
                         </div>
                     </div>
                     <Hidden xsDown={this.state.advSearch} xsUp={this.state.advSearch}>
-                        <AdvSearchForm/>
+                        <AdvSearchForm fetchedBeers={this.state.fetchedBeers} handleSubmit={this.handleSubmit}/>
+                        <div style={{display:'block',margin:'0 auto'}}>
+                        {
+                            this.loadAdvSearch()
+                        }
+                        </div>
                     </Hidden>
                 </Grid>
 
