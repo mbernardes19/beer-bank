@@ -62,8 +62,8 @@ export default class BeerCard extends React.Component{
             minIbu = Math.round(ibu - 20);
         }
         if(abv <= 0){
-            maxAbv = Math.round(abv + 3);
-            minAbv = Math.round(abv + 3);    
+            maxAbv = Math.round(abv + 2);
+            minAbv = Math.round(abv + 2);    
         } else {
             maxAbv = Math.round(abv + 2);
             minAbv = Math.round(abv - 2);
@@ -85,7 +85,7 @@ export default class BeerCard extends React.Component{
         }
         
 
-        const url = `https://api.punkapi.com/v2/beers?abv_lt=${maxAbv}&abv_gt=${minAbv}&ibu_lt=${maxIbu}&ibu_gt=${minIbu}&page=1&per_page=3`;
+        const url = `https://api.punkapi.com/v2/beers?abv_lt=${maxAbv}&abv_gt=${minAbv}&ibu_lt=${maxIbu}&ibu_gt=${minIbu}&page=1&per_page=4`;
         let response = await fetch(url);
         let data = await response.json();
         this.setState({relatedBeers: await data});

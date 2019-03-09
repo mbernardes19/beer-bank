@@ -13,7 +13,14 @@ const breakpointValues = {
     lg: 992,
     xl: 1200,
   };
-  const theme = createMuiTheme({ breakpoints: { values: breakpointValues } });
+  const theme = createMuiTheme({
+        breakpoints: { 
+           values: breakpointValues
+        },
+        typography:{
+            useNextVariants: true,
+        },
+    });
 
 export default class Home extends React.Component{
     constructor(props){

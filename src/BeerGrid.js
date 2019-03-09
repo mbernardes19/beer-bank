@@ -260,6 +260,7 @@ export default class BeerGrid extends React.Component{
                             <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url} description={beer.description} abv={beer.abv} ibu={beer.ibu} ebc={beer.ebc} foodPairing={beer.food_pairing} hops={beer.ingredients.hops} yeast={beer.ingredients.yeast} malt={beer.ingredients.malt} favs={this.state.favouriteBeers}/>
                         )
                     }
+                    {console.log(this.state.fetchedBeers)}
             </MuiThemeProvider>
 
             </React.Fragment>

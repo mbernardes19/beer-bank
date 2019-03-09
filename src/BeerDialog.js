@@ -48,8 +48,20 @@ export default class BeerDialog extends React.Component{
         }
 
         let relatedBeers=[];
+        let checkBeers=[];
         if(this.props.related){
-                relatedBeers = this.props.related.map((beer)=>{
+                checkBeers = this.props.related.filter((beer)=> {
+                    if(beer.name === this.props.name)
+                        return false
+                    else
+                        return true 
+                });
+
+                if(checkBeers.length > 3){
+                    checkBeers.pop();
+                }
+
+                relatedBeers = checkBeers.map((beer)=>{
                         return (
                             <Grid key={beer.id} className='beercard' item xs={12} md={6} lg={4}>
                                 <Paper style={{height:'220px'}} className="beer-container">

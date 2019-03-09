@@ -4,6 +4,7 @@ import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/
 import './../public/style.css';
 import Slider from '@material-ui/lab/Slider';
 import {DatePicker} from 'material-ui-pickers';
+import Button from '@material-ui/core/Button';
 
 const breakpointValues = {
     xs: 0,
@@ -95,104 +96,96 @@ export default class AdvSearchForm extends React.Component{
         this.setState({queryDateAft:inputValue});
     }
 
+    clearFields = () => {
+        this.setState({
+            gtAbv:null,ltAbv:null,gtIbu:null,ltIbu:null,gtEbc:null,ltEbc:null,brwBef:null,brwAft:null,queryDateBef:'',queryDateAft:''
+        })
+                
+    }
+
 
     render(){
         return(
             <Grid  item xs={12}>   
-                <div style={{width:'85%', height:'50px', backgroundColor:'#dddddd', position:'relative',zIndex:100, margin:'0 auto'}}>
-                <p>Max IBU:</p>
+                <div className='slider-field'>
+                <p className='slider-label'>Max IBU: {this.state.ltIbu}</p>
                 <Slider
-                    style={{paddingLeft:'10px'}}
+                    className='slider'
                     value={this.state.ltIbu}
                     min={0}
                     max={1157}
                     step={1}
                     onChange={this.handleChangeLtIbu}
                 />
-                
-                <p>{this.state.ltIbu}</p>
-
                 </div>
 
-                <div style={{width:'85%', height:'50px', backgroundColor:'#dddddd', position:'relative',zIndex:100, margin:'0 auto'}}>
-                <p>Min IBU:</p>
+                <div className='slider-field'>
+                <p className='slider-label'>Min IBU: {this.state.gtIbu}</p>
                 <Slider
-                    style={{paddingLeft:'10px'}}
+                    className='slider'
                     value={this.state.gtIbu}
                     min={0}
                     max={1157}
                     step={1}
                     onChange={this.handleChangeGtIbu}
                 />
-                
-                <p>{this.state.gtIbu}</p>
                 </div>
 
 
-                <div style={{width:'85%', height:'50px', backgroundColor:'#dddddd', position:'relative',zIndex:100, margin:'0 auto'}}>
-                <p>Max ABV:</p>
+                <div className='slider-field'>
+                <p className='slider-label'>Max ABV: {this.state.ltAbv}%</p>
                 <Slider
-                    style={{paddingLeft:'10px'}}
+                    className='slider'
                     value={this.state.ltAbv}
                     min={0}
                     max={55}
                     step={1}
                     onChange={this.handleChangeLtAbv}
                 />
-                
-                <p>{this.state.ltAbv}</p>
-                
                 </div>
 
 
-                <div style={{width:'85%', height:'50px', backgroundColor:'#dddddd', position:'relative',zIndex:5, margin:'0 auto'}}>
-                <p>Min ABV:</p>
+                <div className='slider-field'>
+                <p className='slider-label'>Min ABV: {this.state.gtAbv}%</p>
                 <Slider
-                    style={{paddingLeft:'10px',position:'relative',zIndex:10}}
+                    className='slider'
                     value={this.state.gtAbv}
                     min={0}
                     max={55}
                     step={1}
                     onChange={this.handleChangeGtAbv}
                 />
-                
-                <p>{this.state.gtAbv}</p>
-
                 </div>
 
-                <div style={{width:'85%', height:'50px', backgroundColor:'#dddddd', position:'relative',zIndex:100, margin:'0 auto'}}>
-                <p>Max EBC:</p>
+                <div className='slider-field'>
+                <p className='slider-label'>Max EBC: {this.state.ltEbc}</p>
                 <Slider
-                    style={{paddingLeft:'10px'}}
+                    className='slider'
                     value={this.state.ltEbc}
                     min={0}
                     max={600}
                     step={1}
                     onChange={this.handleChangeLtEbc}
                 />
-                
-                <p>{this.state.ltEbc}</p>
-                
                 </div>
 
 
-                <div style={{width:'85%', height:'50px', backgroundColor:'#dddddd', position:'relative',zIndex:5, margin:'0 auto'}}>
-                <p>Min EBC:</p>
+                <div className='slider-field'>
+                <p className='slider-label'>Min EBC: {this.state.gtEbc}</p>
                 <Slider
-                    style={{paddingLeft:'10px',position:'relative',zIndex:10}}
+                    className='slider'
                     value={this.state.gtEbc}
                     min={0}
                     max={600}
                     step={1}
                     onChange={this.handleChangeGtEbc}
                 />
-                
-                <p>{this.state.gtEbc}</p>
-
                 </div>
 
-                <div>
+                <div className='slider-field'>
+                    <div style={{positon:'relative'}}>
                     <DatePicker
+                        className='date-picker'
                         openTo="year"
                         autoOk
                         clearable
@@ -203,9 +196,12 @@ export default class AdvSearchForm extends React.Component{
                         value={this.state.brwBef}
                         onChange={this.handleBrwBefChange}
                     />
+                    </div>
                 </div>
-                <div>
+                <div className='slider-field'>
+                    <div style={{positon:'relative'}}>
                     <DatePicker
+                        className='date-picker'
                         openTo="year"
                         autoOk
                         clearable
@@ -216,6 +212,7 @@ export default class AdvSearchForm extends React.Component{
                         value={this.state.brwAft}
                         onChange={this.handleBrwAftChange}
                     />
+                    </div>
                 </div>
 
         
@@ -226,15 +223,18 @@ export default class AdvSearchForm extends React.Component{
 
 
                 <form id='form' onSubmit={this.props.handleSubmit} action='https://api.punkapi.com/v2/beers?' method='GET'>
-                <input type='hidden' name='ibu_lt' value={this.state.ltIbu}/>
-                <input type='hidden' name='ibu_gt' value={this.state.gtIbu}/>
-                <input type='hidden' name='abv_lt' value={this.state.ltAbv}/>
-                <input type='hidden' name='abv_gt' value={this.state.gtAbv}/>
-                <input type='hidden' name='ebc_lt' value={this.state.ltEbc}/>
-                <input type='hidden' name='ebc_gt' value={this.state.gtEbc}/>
-                <input id='brwBef' type='hidden' name='brewed_before' value={this.state.queryDateBef}/>
-                <input id='brwAft' type='hidden' name='brewed_after' value={this.state.queryDateAft}/>
-                <button type='submit'>Submit</button>
+                    <input type='hidden' name='ibu_lt' value={this.state.ltIbu}/>
+                    <input type='hidden' name='ibu_gt' value={this.state.gtIbu}/>
+                    <input type='hidden' name='abv_lt' value={this.state.ltAbv}/>
+                    <input type='hidden' name='abv_gt' value={this.state.gtAbv}/>
+                    <input type='hidden' name='ebc_lt' value={this.state.ltEbc}/>
+                    <input type='hidden' name='ebc_gt' value={this.state.gtEbc}/>
+                    <input id='brwBef' type='hidden' name='brewed_before' value={this.state.queryDateBef}/>
+                    <input id='brwAft' type='hidden' name='brewed_after' value={this.state.queryDateAft}/>
+                    <div style={{display:'flex',justifyContent:'center', margin: '0 auto'}}>
+                        <Button variant='raised' style={{display:'inline-block',marginRight:'20px'}} type='submit'>Submit</Button>
+                        <Button variant='raised' style={{display:'inline-block'}} onClick={this.clearFields}>Reset</Button>
+                    </div>
                 </form>
             </Grid>
             

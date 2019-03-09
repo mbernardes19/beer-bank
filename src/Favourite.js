@@ -3,6 +3,23 @@ import Grid from '@material-ui/core/Grid';
 import Header from './Header';
 import './../public/style.css';
 import BeerCard from './BeerCard';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+
+const breakpointValues = {
+    xs: 0,
+    sm: 638,
+    md: 768,
+    lg: 992,
+    xl: 1200,
+  };
+  const theme = createMuiTheme({
+        breakpoints: { 
+           values: breakpointValues
+        },
+        typography:{
+            useNextVariants: true,
+        },
+    });
 
 export default class Favourite extends React.Component{
     constructor(props){
@@ -27,10 +44,12 @@ export default class Favourite extends React.Component{
     render(){
         return(
             <React.Fragment>
+                <MuiThemeProvider>
                 <Grid justify='center' container>
                     <Header/>
                     {this.showFavorites()}
                 </Grid>
+                </MuiThemeProvider>
             </React.Fragment>
         );
     }

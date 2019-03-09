@@ -208,3 +208,33 @@ nav{
 .dialog-food{
     margin-top:5px;
 }
+
+.slider-field{
+    width:85%;
+    height:80px;
+    background-color:#ffffff;
+    position:relative;
+    z-index:100;
+    margin: 20px auto;
+    border-radius: 15px;
+    border: 2px solid orange;
+}
+
+.slider{
+    padding-left:20px;
+    padding-right:20px;
+}
+
+.slider-label{
+    display: block;
+    margin-left:20px;
+    margin-bottom:8px;   
+    margin-top:10px;
+}
+
+.date-picker{
+    top:5px;
+    position: absolute;
+    bottom:10px;
+    left:20px;
+}
