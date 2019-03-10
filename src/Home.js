@@ -27,19 +27,18 @@ export default class Home extends React.Component{
         super(props);
     }
 
-
     render(){
         return(
             <React.Fragment>
+
                 <MuiThemeProvider theme={theme}>
                     <Grid className='grid' justify='center' alignContent='flex-start' container>
                         <Header/>
                         <BeerGrid/>
                     </Grid>
                 </MuiThemeProvider>
+            
             </React.Fragment>
         );
     }
-
-
 }

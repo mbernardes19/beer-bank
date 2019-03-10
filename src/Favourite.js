@@ -44,15 +44,15 @@ export default class Favourite extends React.Component{
     render(){
         return(
             <React.Fragment>
+       
                 <MuiThemeProvider>
                 <Grid justify='center' container>
                     <Header/>
                     {this.showFavorites()}
                 </Grid>
                 </MuiThemeProvider>
+       
             </React.Fragment>
         );
     }
-
-
 }

@@ -13,25 +13,22 @@ export default class App extends React.Component{
     }
     
     render(){
-        //
-        //NÃO ESQUECER DE ADICIONAR O BASEURL
-        //
         const baseUrl = '/beer-bank';
         return(
             <React.Fragment>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <BrowserRouter>
-                <Switch>
-                    <Route path={baseUrl + '/'} exact={true} component={Home}/>
-                    <Route path= {baseUrl + '/favourite'} component={Favourite}/>
-                </Switch>
-            </BrowserRouter>
-            </MuiPickersUtilsProvider>
+
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <BrowserRouter>
+                        <Switch>
+                            <Route path={'/'} exact={true} component={Home}/>
+                            <Route path= {'/favourite'} component={Favourite}/>
+                        </Switch>
+                    </BrowserRouter>
+                </MuiPickersUtilsProvider>
+            
             </React.Fragment>
         );
     }
-
-
 }
 
 ReactDOM.render(<App/>, document.getElementById('app'));

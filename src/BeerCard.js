@@ -45,54 +45,6 @@ export default class BeerCard extends React.Component{
         }
     }
     
-    async getRelatedBeers(){
-        let abv = this.props.abv;
-        let ibu = this.props.ibu;   
-
-        let maxAbv = '';
-        let minAbv = '';
-        let maxIbu = '';
-        let minIbu = '';
-
-        if(ibu <= 0){
-            maxIbu = Math.round(ibu + 20);
-            minIbu = Math.round(ibu + 12);    
-        } else {
-            maxIbu = Math.round(ibu + 20);
-            minIbu = Math.round(ibu - 20);
-        }
-        if(abv <= 0){
-            maxAbv = Math.round(abv + 2);
-            minAbv = Math.round(abv + 2);    
-        } else {
-            maxAbv = Math.round(abv + 2);
-            minAbv = Math.round(abv - 2);
-        }
-
-
-
-        if(maxIbu < 0){
-            maxIbu = Math.round(ibu + 12);
-        }
-        if(minIbu < 0){
-            minIbu = Math.round(ibu + 12);
-        }
-        if(maxAbv < 0){
-            maxAbv = Math.round(abv + 3);
-        }
-        if(minAbv < 0){
-            minAbv = Math.round(abv + 3);
-        }
-        
-
-        const url = `https://api.punkapi.com/v2/beers?abv_lt=${maxAbv}&abv_gt=${minAbv}&ibu_lt=${maxIbu}&ibu_gt=${minIbu}&page=1&per_page=4`;
-        let response = await fetch(url);
-        let data = await response.json();
-        this.setState({relatedBeers: await data});
-        return this.state.relatedBeers;
-    }
-
-
     // 
     // ========== HANDLER FUNCTIONS ==========
     //
@@ -122,6 +74,46 @@ export default class BeerCard extends React.Component{
     
     handleCloseDialog = () => {
         this.setState({open:false});
+    }
+
+    // 
+    // ========== SET RELATED BEERS FUNCTION ==========
+    //
+
+    async getRelatedBeers(){
+        let abv = this.props.abv;
+        let ibu = this.props.ibu;   
+
+        let maxAbv = '';
+        let minAbv = '';
+        let maxIbu = '';
+        let minIbu = '';
+
+        if(ibu <= 0){
+            maxIbu = Math.round(ibu + 20);
+            minIbu = Math.round(ibu + 12);    
+        } else {
+            maxIbu = Math.round(ibu + 20);
+            minIbu = Math.round(ibu - 20);
+        }
+        if(abv <= 0){
+            maxAbv = Math.round(abv + 2);
+            minAbv = Math.round(abv + 2);    
+        } else {
+            maxAbv = Math.round(abv + 2);
+            minAbv = Math.round(abv - 2);
+        }
+
+        maxIbu < 0 ? maxIbu = Math.round(ibu + 12) : false;
+        minIbu < 0 ? minIbu = Math.round(ibu + 12): false;
+        maxAbv < 0 ? maxAbv = Math.round(abv + 3): false;
+        minAbv < 0 ? minAbv = Math.round(abv + 3): false;
+
+        const url = `https://api.punkapi.com/v2/beers?abv_lt=${maxAbv}&abv_gt=${minAbv}&ibu_lt=${maxIbu}&ibu_gt=${minIbu}&page=1&per_page=4`;
+        let response = await fetch(url);
+        let data = await response.json();
+        this.setState({relatedBeers: await data});
+        return this.state.relatedBeers;
     }
 
     // 

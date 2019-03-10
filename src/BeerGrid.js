@@ -40,15 +40,14 @@ export default class BeerGrid extends React.Component{
             totalPages: null,
             scrolling: false,
             loading:true,
-            advSearch:true,
             error: false,
-            loadScroll: false,
+            advSearch:true,
             loadingAdvSearch: false,
             advSearchMode: false
         };
         this.handleSearchBarChange = this.handleSearchBarChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
+        this.reloadDefaultBeers = this.reloadDefaultBeers.bind(this);
     }
 
     // 
@@ -131,7 +130,48 @@ export default class BeerGrid extends React.Component{
     }
     
     // 
-    // ========== OTHER FUNCTIONS ==========
+    // ========== ADVANCED SEARCH FUNCTIONS ==========
+    //
+
+    async handleSubmit(e){
+        e.preventDefault();
+        let pairs = [];
+        let form = document.getElementById('form');
+        for(let i=0;i<form.elements.length;i++){
+            let e = form.elements[i];
+            console.log(e);
+            console.log(e.name);
+            console.log(e.value);
+            if(e.value){
+                if(e.value !== "0"){
+                    pairs.push(encodeURIComponent(e.name) + '=' + encodeURIComponent(e.value));
+                }          
+            }
+        }
+
+        let queryString = pairs.join('&');
+        let fetchableUrl = form.getAttribute('action') + queryString;
+        console.log(fetchableUrl);
+
+        this.setState({loadingAdvSearch:true});
+        let response = await fetch(fetchableUrl);
+        let data = await response.json();
+        this.setState({fetchedBeers:data});
+        this.setState({loadingAdvSearch:false});
+
+    }
+    
+    async reloadDefaultBeers(){
+        const url =  `https://api.punkapi.com/v2/beers`;
+        this.setState({loadingAdvSearch:true});
+        let response = await fetch(url);
+        let data = await response.json();
+        this.setState({fetchedBeers:data});
+        this.setState({loadingAdvSearch:false});
+    }
+
+    // 
+    // ========== FAVORITES FUNCTIONS ==========
     //
 
     checkIfFavoritesExist = () =>  {
@@ -148,6 +188,10 @@ export default class BeerGrid extends React.Component{
         let favArr = [];
         sessionStorage.setItem('favorites', JSON.stringify(favArr)); 
     }
+
+    // 
+    // ========== OTHER FUNCTIONS ==========
+    //
 
     load = () => {
         while(this.state.loading){
@@ -167,16 +211,6 @@ export default class BeerGrid extends React.Component{
                     Please, check your internet connection
                 </p>
             </div>
-            );
-        }
-    }
-
-    loadScroll = () => {
-        while(this.state.loadScroll){
-            return(
-                <div style={{color:'orange', marginTop:'50px'}}>
-                  <CircularProgress color='primary'/>
-                </div>
             );
         }
     }
@@ -210,35 +244,6 @@ export default class BeerGrid extends React.Component{
         favArr ? true : this.createFavoritesArray();
     }
 
-   async handleSubmit(e){
-        e.preventDefault();
-        let pairs = [];
-        let form = document.getElementById('form');
-        for(let i=0;i<form.elements.length;i++){
-            let e = form.elements[i];
-            console.log(e);
-            console.log(e.name);
-            console.log(e.value);
-            if(e.value){
-                if(e.value !== "0"){
-                    pairs.push(encodeURIComponent(e.name) + '=' + encodeURIComponent(e.value));
-                }          
-            }
-                
-        }
-        let queryString = pairs.join('&');
-        let fetchableUrl = form.getAttribute('action') + queryString;
-        console.log(fetchableUrl);
-
-        this.setState({loadingAdvSearch:true});
-        let response = await fetch(fetchableUrl);
-        let data = await response.json();
-        this.setState({fetchedBeers:data});
-        this.setState({loadingAdvSearch:false});
-
-    }
-
-
     render(){
         return(
             <React.Fragment>
@@ -252,7 +257,7 @@ export default class BeerGrid extends React.Component{
                         </div>
                     </div>
                     <Hidden xsDown={this.state.advSearch} xsUp={this.state.advSearch}>
-                        <AdvSearchForm fetchedBeers={this.state.fetchedBeers} handleSubmit={this.handleSubmit}/>
+                        <AdvSearchForm fetchedBeers={this.state.fetchedBeers} handleSubmit={this.handleSubmit} reloadDefaultBeers={this.reloadDefaultBeers}/>
                         <div style={{display:'block',margin:'0 auto'}}>
                         {
                             this.loadAdvSearch()
@@ -270,8 +275,6 @@ export default class BeerGrid extends React.Component{
                             <BeerCard id={beer.id} key={beer.id} tag={beer.tagline} name={beer.name} img={beer.image_url} description={beer.description} abv={beer.abv} ibu={beer.ibu} ebc={beer.ebc} foodPairing={beer.food_pairing} hops={beer.ingredients.hops} yeast={beer.ingredients.yeast} malt={beer.ingredients.malt} favs={this.state.favouriteBeers}/>
                         )
                     }
-                    {console.log(this.state.fetchedBeers)}
-
             </MuiThemeProvider>
 
             </React.Fragment>

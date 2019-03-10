@@ -30,10 +30,6 @@ export default class BeerDialog extends React.Component{
         }
         return false
     }
-    
-    componentDidMount(){
-        
-    }
 
     render(){
 
@@ -47,6 +43,7 @@ export default class BeerDialog extends React.Component{
             });
         }
 
+        // Load Related Beers data
         let relatedBeers=[];
         let checkBeers=[];
         if(this.props.related){
@@ -57,9 +54,7 @@ export default class BeerDialog extends React.Component{
                         return true 
                 });
 
-                if(checkBeers.length > 3){
-                    checkBeers.pop();
-                }
+                checkBeers.length > 3 ? checkBeers.pop() : false;
 
                 relatedBeers = checkBeers.map((beer)=>{
                         return (
@@ -73,9 +68,6 @@ export default class BeerDialog extends React.Component{
                     
                 });
             }
-
-
-       
 
         return(
             <React.Fragment>            
@@ -122,7 +114,4 @@ export default class BeerDialog extends React.Component{
             </React.Fragment>
         );
     }
-
-
 }
-
