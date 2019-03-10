@@ -22,8 +22,8 @@ export default class App extends React.Component{
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <BrowserRouter>
                 <Switch>
-                    <Route path={'/'} exact={true} component={Home}/>
-                    <Route path= {'/favourite'} component={Favourite}/>
+                    <Route path={baseUrl + '/'} exact={true} component={Home}/>
+                    <Route path= {baseUrl + '/favourite'} component={Favourite}/>
                 </Switch>
             </BrowserRouter>
             </MuiPickersUtilsProvider>

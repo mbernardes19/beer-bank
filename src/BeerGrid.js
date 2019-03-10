@@ -16,7 +16,18 @@ const breakpointValues = {
     xl: 1200,
   };
 
-const theme = createMuiTheme({ breakpoints: { values: breakpointValues } });
+const theme = createMuiTheme({
+    breakpoints: {
+        values: breakpointValues 
+    },
+    overrides:{
+        MuiCircularProgress: {
+            colorPrimary: {
+                color: '#FFA82A'
+            },
+        }
+    }
+});
 
 export default class BeerGrid extends React.Component{
     constructor(props){
@@ -31,7 +42,7 @@ export default class BeerGrid extends React.Component{
             loading:true,
             advSearch:true,
             error: false,
-            loadMore: false,
+            loadScroll: false,
             loadingAdvSearch: false,
             advSearchMode: false
         };
@@ -83,7 +94,7 @@ export default class BeerGrid extends React.Component{
         const lastBeerCard = document.querySelector(`.grid > .beercard:last-child`);
         const lastBeerCardOffset = lastBeerCard.offsetTop + lastBeerCard.clientHeight;
         const pageOffset = window.pageYOffset + window.innerHeight;
-        let bottomOffset = 60
+        let bottomOffset = 2000;
         if(pageOffset > lastBeerCardOffset - bottomOffset)
             this.loadMore()
             }
@@ -93,7 +104,6 @@ export default class BeerGrid extends React.Component{
         this.setState(prevState =>({
             page: prevState.page + 1,
             scrolling: true,
-            loadMore: true,
         }), this.getBeers)
      }
 
@@ -143,7 +153,7 @@ export default class BeerGrid extends React.Component{
         while(this.state.loading){
           return(
             <div style={{color:'orange', marginTop:'50px'}}>
-              <CircularProgress color='inherit'/>
+              <CircularProgress color='primary'/>
             </div>
           );
         }
@@ -162,10 +172,10 @@ export default class BeerGrid extends React.Component{
     }
 
     loadScroll = () => {
-        while(this.state.loadMore){
+        while(this.state.loadScroll){
             return(
                 <div style={{color:'orange', marginTop:'50px'}}>
-                  <CircularProgress color='inherit'/>
+                  <CircularProgress color='primary'/>
                 </div>
             );
         }
@@ -174,8 +184,8 @@ export default class BeerGrid extends React.Component{
     loadAdvSearch = () => {
         while(this.state.loadingAdvSearch){
             return(
-                <div style={{color:'orange', marginTop:'50px'}}>
-                  <CircularProgress color='inherit'/>
+                <div style={{width:'100%',display:'flex', justifyContent:'center', color:'orange', margin:'50px auto'}}>
+                  <CircularProgress color='primary'/>
                 </div>
             );
         }
@@ -261,6 +271,7 @@ export default class BeerGrid extends React.Component{
                         )
                     }
                     {console.log(this.state.fetchedBeers)}
+
             </MuiThemeProvider>
 
             </React.Fragment>

@@ -214,15 +214,19 @@ nav{
     height:80px;
     background-color:#ffffff;
     position:relative;
-    z-index:100;
+    z-index:1;
     margin: 20px auto;
     border-radius: 15px;
     border: 2px solid orange;
+    overflow: hidden;
 }
 
 .slider{
     padding-left:20px;
     padding-right:20px;
+    margin-top:20px;
+    height:50px;
+
 }
 
 .slider-label{
@@ -230,6 +234,7 @@ nav{
     margin-left:20px;
     margin-bottom:8px;   
     margin-top:10px;
+    color:rgb(141, 141, 141);
 }
 
 .date-picker{

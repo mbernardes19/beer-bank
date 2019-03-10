@@ -20,8 +20,8 @@ export default class Header extends React.Component{
                         <Sticky>
                             <nav>
                                 <div id='navbar'>                                
-                                    <Link className='link' to={'/'}>HOME</Link>
-                                    <Link className='link' to={'/favourite'}>FAVOURITE</Link>
+                                    <Link className='link' to={baseUrl + '/'}>HOME</Link>
+                                    <Link className='link' to={baseUrl + '/favourite'}>FAVOURITE</Link>
                                 </div>
                             </nav>
                         </Sticky>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
-import {MuiThemeProvider, createMuiTheme, createBreakpoints} from '@material-ui/core/styles';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import './../public/style.css';
 import Slider from '@material-ui/lab/Slider';
 import {DatePicker} from 'material-ui-pickers';
 import Button from '@material-ui/core/Button';
+import {withStyles} from '@material-ui/core/styles';
+
 
 const breakpointValues = {
     xs: 0,
@@ -13,9 +15,30 @@ const breakpointValues = {
     lg: 992,
     xl: 1200,
   };
-  const theme = createMuiTheme({ breakpoints: { values: breakpointValues } });
+  const theme = createMuiTheme({
+        palette: {
+            primary: {
+                main: '#FFA82A',
+                light: '#ffb447',
+                dark: '#db8f20',
+            },
+            secondary: {
+                main: '#FFA82A'
+            },
+        },
+    });
 
-export default class AdvSearchForm extends React.Component{
+  const styles = {
+      thumb:{
+        backgroundColor:'orange'
+    },
+    track:{
+        backgroundColor:'orange',
+        color:'orange'
+    }
+  }
+
+class AdvSearchForm extends React.Component{
     constructor(props){
         super(props);
         this.state={           
@@ -105,12 +128,15 @@ export default class AdvSearchForm extends React.Component{
 
 
     render(){
+        const {classes} = this.props;
         return(
+            <MuiThemeProvider theme={theme}>
             <Grid  item xs={12}>   
                 <div className='slider-field'>
                 <p className='slider-label'>Max IBU: {this.state.ltIbu}</p>
                 <Slider
                     className='slider'
+                    classes={{thumb:classes.thumb,track:classes.track}}
                     value={this.state.ltIbu}
                     min={0}
                     max={1157}
@@ -123,6 +149,7 @@ export default class AdvSearchForm extends React.Component{
                 <p className='slider-label'>Min IBU: {this.state.gtIbu}</p>
                 <Slider
                     className='slider'
+                    classes={{thumb:classes.thumb,track:classes.track}}
                     value={this.state.gtIbu}
                     min={0}
                     max={1157}
@@ -136,6 +163,7 @@ export default class AdvSearchForm extends React.Component{
                 <p className='slider-label'>Max ABV: {this.state.ltAbv}%</p>
                 <Slider
                     className='slider'
+                    classes={{thumb:classes.thumb,track:classes.track}}
                     value={this.state.ltAbv}
                     min={0}
                     max={55}
@@ -149,6 +177,7 @@ export default class AdvSearchForm extends React.Component{
                 <p className='slider-label'>Min ABV: {this.state.gtAbv}%</p>
                 <Slider
                     className='slider'
+                    classes={{thumb:classes.thumb,track:classes.track}}
                     value={this.state.gtAbv}
                     min={0}
                     max={55}
@@ -161,6 +190,7 @@ export default class AdvSearchForm extends React.Component{
                 <p className='slider-label'>Max EBC: {this.state.ltEbc}</p>
                 <Slider
                     className='slider'
+                    classes={{thumb:classes.thumb,track:classes.track}}
                     value={this.state.ltEbc}
                     min={0}
                     max={600}
@@ -174,6 +204,7 @@ export default class AdvSearchForm extends React.Component{
                 <p className='slider-label'>Min EBC: {this.state.gtEbc}</p>
                 <Slider
                     className='slider'
+                    classes={{thumb:classes.thumb,track:classes.track}}
                     value={this.state.gtEbc}
                     min={0}
                     max={600}
@@ -232,14 +263,17 @@ export default class AdvSearchForm extends React.Component{
                     <input id='brwBef' type='hidden' name='brewed_before' value={this.state.queryDateBef}/>
                     <input id='brwAft' type='hidden' name='brewed_after' value={this.state.queryDateAft}/>
                     <div style={{display:'flex',justifyContent:'center', margin: '0 auto'}}>
-                        <Button variant='raised' style={{display:'inline-block',marginRight:'20px'}} type='submit'>Submit</Button>
-                        <Button variant='raised' style={{display:'inline-block'}} onClick={this.clearFields}>Reset</Button>
+                        <Button variant='contained' style={{display:'inline-block',marginRight:'20px'}} type='submit'>Submit</Button>
+                        <Button variant='contained' style={{display:'inline-block'}} onClick={this.clearFields}>Reset</Button>
                     </div>
                 </form>
             </Grid>
+            </MuiThemeProvider>
             
         );
     }
 
 
 }
+
+export default withStyles(styles)(AdvSearchForm);
